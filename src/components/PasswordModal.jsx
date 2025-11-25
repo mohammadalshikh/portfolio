@@ -11,7 +11,7 @@ import { useEditMode } from '../contexts/EditModeContext';
 const PasswordModal = ({ isOpen, onClose, isExitMode = false }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const { enterEditMode, exitEditMode, binConnected, logsCount } = useEditMode();
+    const { enterEditMode, exitEditMode, binConnected } = useEditMode();
 
     // Reset state when modal opens
     useEffect(() => {
@@ -84,13 +84,6 @@ const PasswordModal = ({ isOpen, onClose, isExitMode = false }) => {
                     {isExitMode ? 'Exit Edit Mode' : 'Enter Edit Mode'}
                 </h2>
 
-                {isExitMode && (
-                    <div className="password-modal-status">
-                        <p className="password-modal-status-text">
-                            Log entries created: <span className="password-modal-status-count">{logsCount}</span>
-                        </p>
-                    </div>
-                )}
                 {!isExitMode && (
                     <div className="password-modal-status">
                         <p className={`password-modal-status-text ${binConnected ? 'password-modal-status-connected' : 'password-modal-status-disconnected'}`}>

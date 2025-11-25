@@ -17,12 +17,17 @@ import EditModeActions from './components/EditModeActions';
 import FormModal from './components/FormModal';
 import { EditModeProvider, useEditMode } from './contexts/EditModeContext';
 import { fallbackData } from './fallback/fallbackData';
+import { recordVisit } from './services/analyticsService';
 
 function AppContent() {
     const [activeModal, setActiveModal] = useState(null);
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const { isEditMode, data, updateSection } = useEditMode();
+
+    useEffect(() => {
+        recordVisit();
+    }, []);
 
     useEffect(() => {
         if ('scrollRestoration' in window.history) {

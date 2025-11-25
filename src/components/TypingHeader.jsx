@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import typingSound from '../assets/typing.mp3';
 import AstronautLogo from './AstronautLogo';
 import heartSvg from '../assets/heart.svg?raw';
-import { incrementLogCounter } from '../services/dataService';
 
 const primaryMessages = [
     `> Log ID: STARSHIP-042 |PAUSE|1000|PAUSE|
@@ -110,14 +109,8 @@ const TypingHeader = () => {
     }, [audioReady, isTyping, displayedText, currentMessageIndex, messageMode]);
 
     useEffect(() => {
-        incrementLogCounter().catch(err => {
-            console.error('Failed to increment log counter:', err);
-        });
-    }, []);
-
-    useEffect(() => {
         const mediaQuery = window.matchMedia('(max-width: 767px)');
-        
+
         const handleChange = (e) => {
             setIsMobile(e.matches);
             if (e.matches) {
@@ -368,49 +361,49 @@ const TypingHeader = () => {
             </div>
 
             <div className="typing-messages-container typing-messages-hide-mobile">
-                    <div className="typing-header-messages-inner" style={{ minHeight: '350px' }}>
-                        <div className="typing-header-messages-text-wrapper">
-                            <p className="typing-text">
-                                <span dangerouslySetInnerHTML={{ __html: displayedText }} />
-                                {isTyping && <span className="typing-header-messages-cursor">|</span>}
-                            </p>
-                        </div>
+                <div className="typing-header-messages-inner" style={{ minHeight: '350px' }}>
+                    <div className="typing-header-messages-text-wrapper">
+                        <p className="typing-text">
+                            <span dangerouslySetInnerHTML={{ __html: displayedText }} />
+                            {isTyping && <span className="typing-header-messages-cursor">|</span>}
+                        </p>
+                    </div>
 
-                        <div className="typing-header-messages-actions">
-                            {showArrow && (
-                                <button
-                                    onClick={handleArrowClick}
-                                    className="arrow-button group"
-                                    aria-label="Next message"
+                    <div className="typing-header-messages-actions">
+                        {showArrow && (
+                            <button
+                                onClick={handleArrowClick}
+                                className="arrow-button group"
+                                aria-label="Next message"
+                            >
+                                <svg
+                                    className="typing-header-messages-arrow-icon"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
                                 >
-                                    <svg
-                                        className="typing-header-messages-arrow-icon"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth={2}
-                                            d="M13 7l5 5m0 0l-5 5m5-5H6"
-                                        />
-                                    </svg>
-                                </button>
-                            )}
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M13 7l5 5m0 0l-5 5m5-5H6"
+                                    />
+                                </svg>
+                            </button>
+                        )}
 
-                            {/* Choice buttons after primary messages */}
-                            {showChoiceButtons && (
-                                <button
-                                    onClick={handleTellMeMore}
-                                    className="choice-button"
-                                >
-                                    Tell me more
-                                </button>
-                            )}
-                        </div>
+                        {/* Choice buttons after primary messages */}
+                        {showChoiceButtons && (
+                            <button
+                                onClick={handleTellMeMore}
+                                className="choice-button"
+                            >
+                                Tell me more
+                            </button>
+                        )}
                     </div>
                 </div>
+            </div>
         </header>
     );
 };

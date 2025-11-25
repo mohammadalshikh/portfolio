@@ -606,10 +606,6 @@
         @apply text-sm text-gray-400;
     }
 
-    .password-modal-status-count {
-        @apply text-space-purple font-semibold;
-    }
-
     .password-modal-status-connected {
         @apply text-sm font-semibold text-green-500;
     }

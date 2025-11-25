@@ -25,9 +25,7 @@ export const EditModeProvider = ({ children, initialData }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [configValid, setConfigValid] = useState(false);
     const [binConnected, setBinConnected] = useState(false);
-    const [logsCount, setLogsCount] = useState(0);
 
-    // Validate config on mount
     useEffect(() => {
         const isValid = validateConfig();
         setConfigValid(isValid);
@@ -44,20 +42,15 @@ export const EditModeProvider = ({ children, initialData }) => {
                 if (success) {
                     setData(fetchedData);
                     setOriginalData(fetchedData);
-                    setLogsCount(fetchedData.logs || 0);
                     setBinConnected(true);
                 } else {
-                    // Fetch failed, use fallback data
                     setData(initialData);
                     setOriginalData(initialData);
-                    setLogsCount(0);
                     setBinConnected(false);
                 }
             } catch {
-                // Fetch failed, use fallback data
                 setData(initialData);
                 setOriginalData(initialData);
-                setLogsCount(0);
                 setBinConnected(false);
             } finally {
                 setIsLoading(false);
@@ -157,7 +150,6 @@ export const EditModeProvider = ({ children, initialData }) => {
         isLoading,
         configValid,
         binConnected,
-        logsCount,
         enterEditMode,
         exitEditMode,
         updateData,

@@ -1,22 +1,21 @@
 import axios from 'axios';
 
-// Get environment variables
 const JSONBIN_API_KEY = import.meta.env.VITE_JSONBIN_API_KEY;
-const JSONBIN_BIN_ID = import.meta.env.VITE_JSONBIN_BIN_ID;
+const JSONBIN_DATA_BIN_ID = import.meta.env.VITE_JSONBIN_DATA_BIN_ID;
 const IMGBB_API_KEY = import.meta.env.VITE_IMGBB_API_KEY;
 
 const JSONBIN_BASE_URL = 'https://api.jsonbin.io/v3';
 const IMGBB_BASE_URL = 'https://api.imgbb.com/1/upload';
 
 /**
- * Fetch all data from JSONBin (and ImgBB for images)
+ * Fetch all data from JSONBin
  * 
  * @returns {Promise<{data: object, success: boolean}>} Data and success status
  */
 export const fetchData = async () => {
     try {
         const response = await axios.get(
-            `${JSONBIN_BASE_URL}/b/${JSONBIN_BIN_ID}/latest`,
+            `${JSONBIN_BASE_URL}/b/${JSONBIN_DATA_BIN_ID}/latest`,
             {
                 headers: {
                     'X-Access-Key': JSONBIN_API_KEY,
@@ -25,7 +24,7 @@ export const fetchData = async () => {
         );
         return { data: response.data.record, success: true };
     } catch {
-        return { data: getDefaultData(), success: false }; // Fallback to sample
+        return { data: getDefaultData(), success: false };
     }
 };
 
@@ -34,7 +33,7 @@ export const fetchData = async () => {
  */
 export const saveData = async (data) => {
     const response = await axios.put(
-        `${JSONBIN_BASE_URL}/b/${JSONBIN_BIN_ID}`,
+        `${JSONBIN_BASE_URL}/b/${JSONBIN_DATA_BIN_ID}`,
         data,
         {
             headers: {
@@ -44,45 +43,6 @@ export const saveData = async (data) => {
         }
     );
     return response.data;
-};
-
-/**
- * Increment logs counter in JSONBin
- */
-export const incrementLogCounter = async () => {
-    try {
-        // Fetch current data
-        const response = await axios.get(
-            `${JSONBIN_BASE_URL}/b/${JSONBIN_BIN_ID}/latest`,
-            {
-                headers: {
-                    'X-Access-Key': JSONBIN_API_KEY,
-                },
-            }
-        );
-
-        const data = response.data.record;
-        const currentLogs = data.logs || 0;
-
-        // Increment and save
-        data.logs = currentLogs + 1;
-
-        await axios.put(
-            `${JSONBIN_BASE_URL}/b/${JSONBIN_BIN_ID}`,
-            data,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Access-Key': JSONBIN_API_KEY,
-                },
-            }
-        );
-
-        return data.logs;
-    } catch (error) {
-        console.error('Failed to increment log counter:', error);
-        return null;
-    }
 };
 
 /**
@@ -129,13 +89,13 @@ const getDefaultData = () => ({
 export const validateConfig = () => {
     const missingVars = [];
 
-    if (!JSONBIN_API_KEY || JSONBIN_API_KEY === 'your_jsonbin_api_key_here') {
+    if (!JSONBIN_API_KEY || JSONBIN_API_KEY === 'jsonbin_api_key') {
         missingVars.push('VITE_JSONBIN_API_KEY');
     }
-    if (!JSONBIN_BIN_ID || JSONBIN_BIN_ID === 'your_bin_id_here') {
-        missingVars.push('VITE_JSONBIN_BIN_ID');
+    if (!JSONBIN_DATA_BIN_ID || JSONBIN_DATA_BIN_ID === 'data_bin_id') {
+        missingVars.push('VITE_JSONBIN_DATA_BIN_ID');
     }
-    if (!IMGBB_API_KEY || IMGBB_API_KEY === 'your_imgbb_api_key_here') {
+    if (!IMGBB_API_KEY || IMGBB_API_KEY === 'imagebb_api_key') {
         missingVars.push('VITE_IMGBB_API_KEY');
     }
 
