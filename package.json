@@ -5,6 +5,9 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
+        "build": "vite build",
+        "lint": "eslint .",
+        "preview": "vite preview",
         "i": "npm install && npm run dev"
     },
     "dependencies": {
