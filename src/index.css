@@ -1037,26 +1037,6 @@
         @apply tech-tag text-xs md:text-sm;
     }
 
-    .about-card-flex {
-        @apply card flex-1;
-    }
-
-    .about-card-title-interests {
-        @apply text-lg md:text-xl font-bold text-space-pink mb-2 md:mb-3;
-    }
-
-    .about-interests-grid {
-        @apply grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3;
-    }
-
-    .about-interest-item {
-        @apply flex items-center gap-2 text-gray-300 text-sm md:text-base;
-    }
-
-    .about-interest-icon {
-        @apply text-space-pink;
-    }
-
     .contact-container {
         @apply h-full flex items-center justify-center;
     }
@@ -1143,22 +1123,6 @@
 
     .editable-about-card-flex {
         @apply card flex-1;
-    }
-
-    .editable-about-title-interests {
-        @apply text-lg md:text-xl font-bold text-space-pink mb-2 md:mb-3;
-    }
-
-    .editable-about-interests-preview {
-        @apply grid grid-cols-1 md:grid-cols-2 gap-2 mt-3;
-    }
-
-    .editable-about-interest-item {
-        @apply flex items-center gap-2 text-gray-300 text-sm md:text-base;
-    }
-
-    .editable-about-interest-icon {
-        @apply text-space-pink;
     }
 
     .education-container {

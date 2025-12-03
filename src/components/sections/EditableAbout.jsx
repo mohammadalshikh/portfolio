@@ -1,15 +1,14 @@
 /**
  * EditableAbout - Edit mode version of About component
  *
- * @param {Object} about - { intro, skills, interests }
+ * @param {Object} about - { intro, skills }
  * @param {Function} onChange - function(newAbout)
  */
 const EditableAbout = ({ about = {}, onChange }) => {
-    const { intro = '', skills = [], interests = [] } = about;
+    const { intro = '', skills = [] } = about;
 
     // Local copies of array-like fields as strings while editing
     const skillsValue = Array.isArray(skills) ? skills.join(',') : skills || '';
-    const interestsValue = Array.isArray(interests) ? interests.join(',') : interests || '';
 
     const handleFieldChange = (field, value) => {
         onChange({ ...about, [field]: value });
@@ -58,29 +57,6 @@ const EditableAbout = ({ about = {}, onChange }) => {
                     <div className="editable-about-skills-preview">
                         {about.skills.map((s, i) => (
                             <span key={i} className="editable-about-skill-tag">{s}</span>
-                        ))}
-                    </div>
-                )}
-            </div>
-
-            <div className="editable-about-card-flex">
-                <h3 className="editable-about-title-interests">Interests & Hobbies</h3>
-                <input
-                    type="text"
-                    value={interestsValue}
-                    onChange={(e) => handleArrayChange('interests', e.target.value)}
-                    onBlur={(e) => handleArrayBlur('interests', e.target.value)}
-                    className="editable-about-input"
-                    placeholder="Interests"
-                />
-
-                {Array.isArray(about.interests) && about.interests.length > 0 && (
-                    <div className="editable-about-interests-preview">
-                        {about.interests.map((it, idx) => (
-                            <div key={idx} className="editable-about-interest-item">
-                                <span className="editable-about-interest-icon">✦</span>
-                                <span>{it}</span>
-                            </div>
                         ))}
                     </div>
                 )}

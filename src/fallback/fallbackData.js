@@ -67,7 +67,7 @@ export const fallbackData = {
         }
     ],
     about: {
-        intro: `Hi there! I’m Mohammad, a final-year Computer Science student at Concordia and a developer who enjoys turning ideas into thoughtful web experiences. \n\nOver the past few years I’ve explored a wide range of technologies, and I’m now focused on building modern web apps.`,
+        intro: `Hi there! I’m Mohammad, a final-year Computer Science student at Concordia and a developer who enjoys turning ideas into thoughtful web experiences. \n\nOver the past few years I’ve explored a wide range of technologies, and I’m now focused on building modern and scalable web apps.`,
         skills: [
             'Python',
             'C#',
@@ -77,14 +77,6 @@ export const fallbackData = {
             'React',
             'Angular',
             'SQL'
-        ],
-        interests: [
-            "Exploring nature",
-            "Cinema",
-            "Teaching",
-            "Sports",
-            "Video games",
-            "Hip-hop"
         ],
     },
     experiences: [
@@ -141,7 +133,7 @@ export const fallbackData = {
             duration: 'Jan. 2021 - Apr. 2026',
             achievements: [
                 'Member of the Institute for Co-operative Education',
-                'VP of Google Developer Student Club',
+                'VP - Google Developer Student Club',
             ],
             image: concordia
         },

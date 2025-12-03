@@ -79,7 +79,6 @@ const getDefaultData = () => ({
     about: {
         intro: '',
         skills: [],
-        interests: [],
     },
 });
 
