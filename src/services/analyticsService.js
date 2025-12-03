@@ -171,7 +171,7 @@ export const recordVisit = async () => {
         }
 
         data.count += 1;
-        data.visits.push(visitData);
+        data.visits.unshift(visitData);
 
         await axios.put(
             `${JSONBIN_BASE_URL}/b/${JSONBIN_VISITS_BIN_ID}`,
