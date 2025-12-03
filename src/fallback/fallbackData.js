@@ -132,7 +132,6 @@ export const fallbackData = {
             field: '',
             duration: 'Jan. 2021 - Apr. 2026',
             achievements: [
-                'Member of the Institute for Co-operative Education',
                 'VP - Google Developer Student Club',
             ],
             image: concordia
