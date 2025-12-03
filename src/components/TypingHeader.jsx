@@ -13,19 +13,7 @@ const primaryMessages = [
     `Hi there, I'm Mohammad.|PAUSE|1000|PAUSE|
     Welcome to my digital space.`,
 
-    "I'm a final year Computer Science student at Concordia University.",
     "I hope you enjoy exploring my website. |PAUSE|500|PAUSE|Welcome aboard.|PAUSE|500|PAUSE|\n\n> END_LOG",
-];
-
-const secondaryMessages = [
-    "It's nice and quiet up here isn't it?",
-    "I love stargazing and contemplating the universe.",
-    'An old friend once told me |PAUSE|1000|PAUSE|\n"We used to look up at the sky and wonder at our place in the stars.|PAUSE|500|PAUSE|\n Now we just look down and debug"|PAUSE|1000|PAUSE|\n\n...',
-    "...",
-    "What's that?",
-    "No. I didn't steal that from Interstellar",
-    "...",
-    "If you made it this far, here's a pixel heart for you:",
 ];
 
 /**
@@ -39,8 +27,6 @@ const TypingHeader = () => {
     const [showArrow, setShowArrow] = useState(false);
     const [audioReady, setAudioReady] = useState(false);
     const [isMuted, setIsMuted] = useState(true);
-    const [messageMode, setMessageMode] = useState('primary');
-    const [showChoiceButtons, setShowChoiceButtons] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
     const audioRef = useRef(null);
@@ -103,10 +89,10 @@ const TypingHeader = () => {
 
     useEffect(() => {
         if (audioReady &&
-            !isTyping && displayedText && currentMessageIndex < (messageMode === 'primary' ? primaryMessages : secondaryMessages).length) {
+            !isTyping && displayedText && currentMessageIndex < primaryMessages.length) {
             setShowArrow(true);
         }
-    }, [audioReady, isTyping, displayedText, currentMessageIndex, messageMode]);
+    }, [audioReady, isTyping, displayedText, currentMessageIndex]);
 
     useEffect(() => {
         const mediaQuery = window.matchMedia('(max-width: 767px)');
@@ -138,7 +124,7 @@ const TypingHeader = () => {
         if (!isTyping) return;
         if (isMobile) return;
 
-        const currentMessages = messageMode === 'primary' ? primaryMessages : secondaryMessages;
+        const currentMessages = primaryMessages
         const currentMessage = currentMessages[currentMessageIndex];
 
         // Check if message has pauses
@@ -164,7 +150,7 @@ const TypingHeader = () => {
             let accumulatedText = '';
 
             // Start typing sound
-            if (audioRef.current && !isMuted && currentMessage !== '...') {
+            if (audioRef.current && !isMuted) {
                 audioRef.current.currentTime = 0;
                 audioRef.current.play()
                     .then(() => { })
@@ -231,7 +217,7 @@ const TypingHeader = () => {
             let charIndex = 0;
 
             // Start typing sound
-            if (audioRef.current && !isMuted && currentMessage !== '...') {
+            if (audioRef.current && !isMuted) {
                 audioRef.current.currentTime = 0;
                 audioRef.current.play()
                     .then(() => { })
@@ -269,10 +255,10 @@ const TypingHeader = () => {
                 audioRef.current.pause();
             }
         };
-    }, [currentMessageIndex, isTyping, isMuted, messageMode, isMobile]);
+    }, [currentMessageIndex, isTyping, isMuted, isMobile]);
 
     const handleArrowClick = () => {
-        const currentMessages = messageMode === 'primary' ? primaryMessages : secondaryMessages;
+        const currentMessages = primaryMessages
         if (currentMessageIndex < currentMessages.length - 1) {
             setShowArrow(false);
             setDisplayedText('');
@@ -281,19 +267,7 @@ const TypingHeader = () => {
         } else {
             // Last message reached
             setShowArrow(false);
-
-            if (messageMode === 'primary') {
-                setShowChoiceButtons(true); // after primary
-            }
         }
-    };
-
-    const handleTellMeMore = () => {
-        setShowChoiceButtons(false);
-        setMessageMode('secondary');
-        setCurrentMessageIndex(0);
-        setDisplayedText('');
-        setIsTyping(true);
     };
 
     return (
@@ -389,16 +363,6 @@ const TypingHeader = () => {
                                         d="M13 7l5 5m0 0l-5 5m5-5H6"
                                     />
                                 </svg>
-                            </button>
-                        )}
-
-                        {/* Choice buttons after primary messages */}
-                        {showChoiceButtons && (
-                            <button
-                                onClick={handleTellMeMore}
-                                className="choice-button"
-                            >
-                                Tell me more
                             </button>
                         )}
                     </div>
