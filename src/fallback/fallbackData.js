@@ -21,7 +21,7 @@ export const fallbackData = {
         {
             id: 4,
             name: 'MindSync',
-            description: 'Task-management Discord bot with LLM integration',
+            description: "Discord bot with LLM integration",
             technologies: [
                 'Discord.js',
                 'OpenAI API'
@@ -43,7 +43,7 @@ export const fallbackData = {
         {
             id: 2,
             name: 'ConcoGrades',
-            description: 'A classroom management web-app for teachers and students',
+            description: 'Classroom management web-app',
             technologies: [
                 'Python',
                 'Flask',
@@ -56,7 +56,7 @@ export const fallbackData = {
         {
             id: 1,
             name: "SolarScope",
-            description: "Interactive solar system simulation",
+            description: "Solar system simulation",
             technologies: [
                 "C++",
                 "OpenGL",
@@ -67,7 +67,7 @@ export const fallbackData = {
         }
     ],
     about: {
-        intro: `Hello! I'm Mohammad Alshikh, a passionate developer who loves creating beautiful and functional web experiences.\n\nCurrently finishing my last year at Concordia, I have learned a handful of technologies over the past few years that helped me grow and contribute as an engineer. At the moment, my focus is on building modern and scalable web applications that are both robust and scalable.`,
+        intro: `Hi there! I’m Mohammad, a final-year Computer Science student at Concordia and a developer who enjoys turning ideas into thoughtful web experiences. \n\nOver the past few years I’ve explored a wide range of technologies, and I’m now focused on building modern web apps.`,
         skills: [
             'Python',
             'C#',
