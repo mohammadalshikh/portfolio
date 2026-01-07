@@ -1216,6 +1216,10 @@
         margin-top: 1rem;
     }
 
+    .mb-sm {
+        margin-bottom: 0.5rem;
+    }
+
     /* Form field utilities */
     .card-meta-input {
         text-align: right;

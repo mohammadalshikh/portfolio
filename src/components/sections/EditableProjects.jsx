@@ -85,7 +85,7 @@ const EditableProjects = ({ projects = [], onChange }) => {
                             </div>
 
                             {Array.isArray(project.technologies) && project.technologies.length > 0 && (
-                                <div className="tech-tags mt-sm">
+                                <div className="tech-tags mt-sm mb-sm">
                                     {project.technologies.map((tech, idx) => (
                                         <span key={idx} className="tech-tag">{tech}</span>
                                     ))}
