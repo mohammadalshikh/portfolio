@@ -1,9 +1,7 @@
 /**
  * Contact Component - Contact form
- * 
- * @param {function} onClose - Function to close the modal
  */
-const Contact = ({ onClose }) => {
+const Contact = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const form = e.target;
@@ -20,12 +18,6 @@ const Contact = ({ onClose }) => {
                 if (response.ok) {
                     alert('Message sent successfully!');
                     form.reset();
-                    // Close the modal after successful send
-                    if (onClose) {
-                        setTimeout(() => {
-                            onClose();
-                        }, 500); // Small delay to allow user to see the success message
-                    }
                 } else {
                     alert('Failed to send message. Please try again.');
                 }
@@ -36,64 +28,47 @@ const Contact = ({ onClose }) => {
     };
 
     return (
-        <div className="contact-container">
-            <div className="contact-card">
-                <h3 className="contact-title">
-                    Get in touch
-                </h3>
-
-                <form onSubmit={handleSubmit} className="contact-form">
-                    <div>
-                        <label htmlFor="name" className="contact-label">
-                            Name *
-                        </label>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            required
-                            className="contact-input"
-                            placeholder="Your name"
-                        />
-                    </div>
-
-                    <div>
-                        <label htmlFor="email" className="contact-label">
-                            Email *
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            required
-                            className="contact-input"
-                            placeholder="email@example.com"
-                        />
-                    </div>
-
-                    <div>
-                        <label htmlFor="message" className="contact-label">
-                            Message *
-                        </label>
-                        <textarea
-                            id="message"
-                            name="message"
-                            required
-                            rows="4"
-                            className="contact-textarea"
-                            placeholder="Your message here..."
-                        />
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="contact-button"
-                    >
-                        Send Message
-                    </button>
-                </form>
+        <form onSubmit={handleSubmit} className="contact-form">
+            <div className="form-group">
+                <label htmlFor="name" className="form-label">Name *</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    className="form-input"
+                    placeholder="Your name"
+                />
             </div>
-        </div>
+
+            <div className="form-group">
+                <label htmlFor="email" className="form-label">Email *</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    className="form-input"
+                    placeholder="email@example.com"
+                />
+            </div>
+
+            <div className="form-group">
+                <label htmlFor="message" className="form-label">Message *</label>
+                <textarea
+                    id="message"
+                    name="message"
+                    required
+                    rows="4"
+                    className="form-textarea"
+                    placeholder="Your message here..."
+                />
+            </div>
+
+            <button type="submit" className="form-submit-btn">
+                Send Message
+            </button>
+        </form>
     );
 };
 

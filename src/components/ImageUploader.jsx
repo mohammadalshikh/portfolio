@@ -14,7 +14,7 @@ const ImageUploader = ({ images = [], onChange, apiKey, id }) => {
     const [error, setError] = useState(null);
     const [dragOver, setDragOver] = useState(false);
     const [_dragCounter, setDragCounter] = useState(0);
-    
+
     // Generate unique ID for the file input
     const inputId = `image-upload-input-${id || Math.random().toString(36).substr(2, 9)}`;
 
@@ -49,7 +49,7 @@ const ImageUploader = ({ images = [], onChange, apiKey, id }) => {
                 if (!file.type.startsWith('image/')) {
                     throw new Error(`File ${file.name} is not an image`);
                 }
-                
+
                 // Validate file size (max 32MB for ImageBB)
                 if (file.size > 32 * 1024 * 1024) {
                     throw new Error(`File ${file.name} exceeds 32MB limit`);
@@ -131,7 +131,7 @@ const ImageUploader = ({ images = [], onChange, apiKey, id }) => {
     };
 
     return (
-        <div className="image-uploader-container">            
+        <div className="image-uploader-container">
             <div
                 className={`image-uploader-dropzone ${dragOver ? 'image-uploader-dropzone-active' : ''}`}
                 onDrop={handleDrop}

@@ -147,14 +147,18 @@ export const EditModeProvider = ({ children, initialData }) => {
         data,
         originalData,
         isDirty,
+        hasUnsavedChanges: isDirty,
         isLoading,
+        isSaving: isLoading,
         configValid,
         binConnected,
         enterEditMode,
         exitEditMode,
         updateData,
         saveChanges,
+        save: saveChanges,
         undoChanges,
+        undo: undoChanges,
         updateSection,
     };
 

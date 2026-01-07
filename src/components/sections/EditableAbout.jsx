@@ -1,66 +1,50 @@
 /**
- * EditableAbout - Edit mode version of About component
- *
- * @param {Object} about - { intro, skills }
- * @param {Function} onChange - function(newAbout)
+ * EditableAbout - Edit mode version of About section (intro + skills)
  */
 const EditableAbout = ({ about = {}, onChange }) => {
     const { intro = '', skills = [] } = about;
-
-    // Local copies of array-like fields as strings while editing
-    const skillsValue = Array.isArray(skills) ? skills.join(',') : skills || '';
+    const skillsValue = Array.isArray(skills) ? skills.join(', ') : skills || '';
 
     const handleFieldChange = (field, value) => {
         onChange({ ...about, [field]: value });
     };
 
-    const handleArrayChange = (field, value) => {
-        // store raw string while editing
-        onChange({ ...about, [field]: value });
-    };
-
-    const handleArrayBlur = (field, value) => {
-        // parse into array on blur
+    const handleSkillsBlur = (value) => {
         if (typeof value === 'string') {
             const array = value.split(',').map((item) => item.trim()).filter((item) => item);
-            onChange({ ...about, [field]: array });
+            onChange({ ...about, skills: array });
         }
     };
 
     return (
-        <div className="editable-about-container">
-            <div className="editable-about-card">
-                <h3 className="editable-about-title-welcome">Welcome! 👋</h3>
+        <div>
+            <div className="form-group">
                 <textarea
                     value={intro}
                     onChange={(e) => handleFieldChange('intro', e.target.value)}
-                    className="editable-about-textarea"
+                    className="editable-textarea section-text"
                     rows={6}
                     placeholder="Write a short intro about yourself..."
                 />
             </div>
 
-            <div className="editable-about-card">
-                <h3 className="editable-about-title-skills">Skills & Technologies</h3>
-                <div className="editable-about-input-wrapper">
-                    <input
-                        type="text"
-                        value={skillsValue}
-                        onChange={(e) => handleArrayChange('skills', e.target.value)}
-                        onBlur={(e) => handleArrayBlur('skills', e.target.value)}
-                        className="editable-about-input"
-                        placeholder="Python, React, Java"
-                    />
-                </div>
-
-                {Array.isArray(about.skills) && about.skills.length > 0 && (
-                    <div className="editable-about-skills-preview">
-                        {about.skills.map((s, i) => (
-                            <span key={i} className="editable-about-skill-tag">{s}</span>
-                        ))}
-                    </div>
-                )}
+            <div className="form-group mt-lg">
+                <input
+                    type="text"
+                    value={skillsValue}
+                    onChange={(e) => handleFieldChange('skills', e.target.value)}
+                    onBlur={(e) => handleSkillsBlur(e.target.value)}
+                    className="editable-input"
+                    placeholder="Python, React, Java"
+                />
             </div>
+            {Array.isArray(about.skills) && about.skills.length > 0 && (
+                <div className="skill-tags mt-sm">
+                    {about.skills.map((skill, i) => (
+                        <span key={i} className="skill-tag">{skill}</span>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
