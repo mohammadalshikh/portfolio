@@ -248,7 +248,7 @@
     }
 
     .navbar-dropdown {
-        position: fixed;
+        position: absolute;
         top: 56px;
         left: 0;
         right: 0;
@@ -261,6 +261,12 @@
         -webkit-backdrop-filter: blur(10px);
         border-bottom: 1px solid transparent;
         z-index: 999;
+    }
+
+    @media (min-width: 451px) {
+        .navbar-dropdown {
+            display: none !important;
+        }
     }
 
     .navbar-dropdown-open {
