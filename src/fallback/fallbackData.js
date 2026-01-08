@@ -72,11 +72,13 @@ export const fallbackData = {
             'Python',
             'C#',
             'Java',
+            'JavaScript',
+            'TypeScript',
             'Spring Boot',
+            'SQL',
             'Flask',
             'React',
-            'Angular',
-            'SQL'
+            'Angular'
         ],
     },
     experiences: [

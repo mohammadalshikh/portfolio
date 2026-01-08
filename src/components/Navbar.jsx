@@ -27,7 +27,11 @@ const Navbar = ({ onEditClick }) => {
                         }
                         onClick={closeMenu}
                     >
-                        MA
+                        <img
+                            src="/logo-white-font-tr-full-size.png"
+                            alt="MA Logo"
+                            className="navbar-logo-img"
+                        />
                     </NavLink>
 
                     {/* Desktop nav links */}
