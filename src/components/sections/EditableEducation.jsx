@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import EditableCard from '../EditableCard';
+import LogoUploader from '../LogoUploader';
+
+const IMGBB_API_KEY = import.meta.env.VITE_IMGBB_API_KEY;
 
 /**
- * EditableEducation - Edit mode version of Education section
+ * Edit mode version of Education section
  */
 const EditableEducation = ({ education = [], onChange }) => {
     const [draggedIndex, setDraggedIndex] = useState(null);
@@ -55,9 +58,12 @@ const EditableEducation = ({ education = [], onChange }) => {
                         <div className="card">
                             <div className="card-header">
                                 <div className="card-header-left">
-                                    {edu.image && (
-                                        <img src={edu.image} alt={`${edu.institution} logo`} className="card-logo" />
-                                    )}
+                                    <LogoUploader
+                                        logoUrl={edu.image || null}
+                                        onChange={(newLogoUrl) => handleFieldChange(index, 'image', newLogoUrl)}
+                                        apiKey={IMGBB_API_KEY}
+                                        alt={`${edu.institution} logo`}
+                                    />
                                     <div>
                                         <input
                                             type="text"
@@ -78,7 +84,7 @@ const EditableEducation = ({ education = [], onChange }) => {
                                             value={edu.field || ''}
                                             onChange={(e) => handleFieldChange(index, 'field', e.target.value)}
                                             className="editable-input card-description"
-                                            placeholder="Field of Study"
+                                            placeholder="Field"
                                         />
                                     </div>
                                 </div>
@@ -90,7 +96,7 @@ const EditableEducation = ({ education = [], onChange }) => {
                                     placeholder="Duration"
                                 />
                             </div>
-                            <div className="form-group mt-md">
+                            <div className="form-group">
                                 <input
                                     type="text"
                                     value={(edu.achievements || []).join(', ')}

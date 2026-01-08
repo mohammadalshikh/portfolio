@@ -1,5 +1,5 @@
 /**
- * Contact Component - Contact form
+ * Contact form
  */
 const Contact = () => {
     const handleSubmit = (e) => {

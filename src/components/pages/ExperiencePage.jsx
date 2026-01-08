@@ -2,7 +2,7 @@ import { useEditMode } from '../../contexts/EditModeContext';
 import EditableExperiences from '../sections/EditableExperiences';
 
 /**
- * ExperiencePage - Page displaying work experiences
+ * Job experiences
  */
 const ExperiencePage = () => {
     const { isEditMode, data, updateSection, hasUnsavedChanges, undo, save, isSaving } = useEditMode();

@@ -11,7 +11,7 @@ const verifyPassword = (password) => {
 };
 
 /**
- * EditModeProvider - Manages edit mode state and data synchronization
+ * Manages edit mode state and data synchronization
  * 
  * @param {Object} children - Child components
  * @param {Object} initialData - Fallback data (if fetch fails)

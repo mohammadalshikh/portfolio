@@ -4,7 +4,7 @@ import EditableEducation from '../sections/EditableEducation';
 import Contact from '../sections/Contact';
 
 /**
- * LandingPage - Main landing page with About, Skills, Education, and Contact sections
+ * Home page
  */
 const LandingPage = () => {
     const { isEditMode, data, updateSection, hasUnsavedChanges, undo, save, isSaving } = useEditMode();
@@ -76,7 +76,33 @@ const LandingPage = () => {
 
             {/* Skills Section */}
             <h2 className="section-heading">Skills</h2>
-            {isEditMode ? null : (
+            {isEditMode ? (
+                <>
+                    <div className="form-group">
+                        <input
+                            type="text"
+                            value={Array.isArray(about.skills) ? about.skills.join(', ') : about.skills || ''}
+                            onChange={(e) => updateSection('about', { ...about, skills: e.target.value })}
+                            onBlur={(e) => {
+                                const value = e.target.value;
+                                if (typeof value === 'string') {
+                                    const array = value.split(',').map((item) => item.trim()).filter((item) => item);
+                                    updateSection('about', { ...about, skills: array });
+                                }
+                            }}
+                            className="editable-input list"
+                            placeholder="Python, React"
+                        />
+                    </div>
+                    {Array.isArray(about.skills) && about.skills.length > 0 && (
+                        <div className="skill-tags">
+                            {about.skills.map((skill, idx) => (
+                                <span key={idx} className="skill-tag">{skill}</span>
+                            ))}
+                        </div>
+                    )}
+                </>
+            ) : (
                 <div className="skill-tags">
                     {(about.skills || []).map((skill, idx) => (
                         <span key={idx} className="skill-tag">{skill}</span>
@@ -146,8 +172,8 @@ const LandingPage = () => {
             )}
 
             {/* Contact Section */}
-            <div className="contact-section">
-                <h2 className="section-heading">Contact</h2>
+            <div>
+                <h2 className="section-heading contact">Contact</h2>
                 <Contact />
             </div>
         </div>

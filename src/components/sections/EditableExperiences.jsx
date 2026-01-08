@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import EditableCard from '../EditableCard';
+import LogoUploader from '../LogoUploader';
+
+const IMGBB_API_KEY = import.meta.env.VITE_IMGBB_API_KEY;
 
 /**
- * EditableExperiences - Edit mode version of Experiences section
+ * Edit mode version of Experiences section
  */
 const EditableExperiences = ({ experiences = [], onChange }) => {
     const [draggedIndex, setDraggedIndex] = useState(null);
@@ -57,9 +60,12 @@ const EditableExperiences = ({ experiences = [], onChange }) => {
                         <div className="card">
                             <div className="card-header">
                                 <div className="card-header-left">
-                                    {exp.image && (
-                                        <img src={exp.image} alt={`${exp.company} logo`} className="card-logo" />
-                                    )}
+                                    <LogoUploader
+                                        logoUrl={exp.image || null}
+                                        onChange={(newLogoUrl) => handleFieldChange(index, 'image', newLogoUrl)}
+                                        apiKey={IMGBB_API_KEY}
+                                        alt={`${exp.company} logo`}
+                                    />
                                     <div>
                                         <input
                                             type="text"
@@ -88,22 +94,22 @@ const EditableExperiences = ({ experiences = [], onChange }) => {
                             <textarea
                                 value={exp.description || ''}
                                 onChange={(e) => handleFieldChange(index, 'description', e.target.value)}
-                                className="editable-textarea mt-md"
+                                className="editable-textarea"
                                 rows="2"
                                 placeholder="Description"
                             />
-                            <div className="form-group mt-md">
+                            <div className="form-group">
                                 <input
                                     type="text"
                                     value={Array.isArray(exp.technologies) ? exp.technologies.join(', ') : exp.technologies || ''}
                                     onChange={(e) => handleFieldChange(index, 'technologies', e.target.value)}
                                     onBlur={(e) => handleTechnologiesBlur(index, e.target.value)}
-                                    className="editable-input"
+                                    className="editable-input list"
                                     placeholder="Python, React"
                                 />
                             </div>
                             {Array.isArray(exp.technologies) && exp.technologies.length > 0 && (
-                                <div className="tech-tags mt-sm">
+                                <div className="tech-tags">
                                     {exp.technologies.map((tech, idx) => (
                                         <span key={idx} className="tech-tag">{tech}</span>
                                     ))}

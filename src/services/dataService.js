@@ -10,7 +10,8 @@ const IMGBB_BASE_URL = 'https://api.imgbb.com/1/upload';
 /**
  * Fetch all data from JSONBin
  * 
- * @returns {Promise<{data: object, success: boolean}>} Data and success status
+ * @returns {Promise<{data: object, success: boolean}>} Data and
+ * success status
  */
 export const fetchData = async () => {
     try {

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
 /**
- * Navbar - Top navigation bar with responsive mobile menu
+ * Top navigation bar
  */
 const Navbar = ({ onEditClick }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);

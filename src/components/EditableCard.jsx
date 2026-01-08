@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 /**
- * EditableCard - Wrapper component for editable cards with drag-and-drop
+ * Wrapper component for editable cards with drag-and-drop
  * 
  * @param {ReactNode} children - Card content
  * @param {function} onDelete - Delete handler

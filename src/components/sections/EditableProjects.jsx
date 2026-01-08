@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import EditableCard from '../EditableCard';
-import ImageUploader from '../ImageUploader';
+import HighlightUploader from '../HighlightUploader';
 
 const IMGBB_API_KEY = import.meta.env.VITE_IMGBB_API_KEY;
 
 /**
- * EditableProjects - Edit mode version of Projects section
+ * Edit mode version of Projects section
  */
 const EditableProjects = ({ projects = [], onChange }) => {
     const [draggedIndex, setDraggedIndex] = useState(null);
@@ -63,43 +63,43 @@ const EditableProjects = ({ projects = [], onChange }) => {
                                 value={project.name}
                                 onChange={(e) => handleFieldChange(index, 'name', e.target.value)}
                                 className="editable-input card-title"
-                                placeholder="Project Name"
+                                placeholder="Project"
                             />
                             <textarea
                                 value={project.description || ''}
                                 onChange={(e) => handleFieldChange(index, 'description', e.target.value)}
-                                className="editable-textarea mt-sm"
+                                className="editable-textarea"
                                 rows="2"
                                 placeholder="Description"
                             />
 
-                            <div className="form-group mt-md">
+                            <div className="form-group">
                                 <input
                                     type="text"
                                     value={Array.isArray(project.technologies) ? project.technologies.join(', ') : project.technologies || ''}
                                     onChange={(e) => handleFieldChange(index, 'technologies', e.target.value)}
                                     onBlur={(e) => handleTechnologiesBlur(index, e.target.value)}
-                                    className="editable-input"
-                                    placeholder="React, Node.js, MongoDB"
+                                    className="editable-input list"
+                                    placeholder="Python, React"
                                 />
                             </div>
 
                             {Array.isArray(project.technologies) && project.technologies.length > 0 && (
-                                <div className="tech-tags mt-sm mb-sm">
+                                <div className="tech-tags">
                                     {project.technologies.map((tech, idx) => (
                                         <span key={idx} className="tech-tag">{tech}</span>
                                     ))}
                                 </div>
                             )}
 
-                            <ImageUploader
+                            <HighlightUploader
                                 images={project.screenshots || []}
                                 onChange={(newImages) => handleFieldChange(index, 'screenshots', newImages)}
                                 apiKey={IMGBB_API_KEY}
                                 id={`project-${project.id || index}`}
                             />
 
-                            <div className="form-group mt-md">
+                            <div className="form-group">
                                 <input
                                     type="url"
                                     value={project.link || ''}
@@ -108,7 +108,7 @@ const EditableProjects = ({ projects = [], onChange }) => {
                                     placeholder="https://example.com"
                                 />
                             </div>
-                            <div className="form-group mt-sm">
+                            <div className="form-group">
                                 <input
                                     type="url"
                                     value={project.github || ''}

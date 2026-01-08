@@ -2,14 +2,14 @@ import { useState } from 'react';
 import axios from 'axios';
 
 /**
- * ImageUploader - Upload images to ImageBB and manage image list
+ * Upload highlights to ImageBB and manage image list
  * 
  * @param {Array} images - Array of image URLs
  * @param {function} onChange - Callback when images change
  * @param {string} apiKey - ImageBB API key
  * @param {string} id - Unique identifier for this uploader instance
  */
-const ImageUploader = ({ images = [], onChange, apiKey, id }) => {
+const HighlightUploader = ({ images = [], onChange, apiKey, id }) => {
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(null);
     const [dragOver, setDragOver] = useState(false);
@@ -131,9 +131,9 @@ const ImageUploader = ({ images = [], onChange, apiKey, id }) => {
     };
 
     return (
-        <div className="image-uploader-container">
+        <div className="highlight-uploader-container">
             <div
-                className={`image-uploader-dropzone ${dragOver ? 'image-uploader-dropzone-active' : ''}`}
+                className={`highlight-uploader-dropzone ${dragOver ? 'highlight-uploader-dropzone-active' : ''}`}
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
                 onDragEnter={handleDragEnter}
@@ -144,14 +144,14 @@ const ImageUploader = ({ images = [], onChange, apiKey, id }) => {
                     accept="image/*"
                     multiple
                     onChange={handleFileInputChange}
-                    className="image-uploader-input"
+                    className="highlight-uploader-input"
                     id={inputId}
                     disabled={uploading}
                 />
-                <label htmlFor={inputId} className="image-uploader-dropzone-label">
+                <label htmlFor={inputId} className="highlight-uploader-dropzone-label">
                     {uploading ? (
                         <>
-                            <svg className="image-uploader-spinner" fill="none" viewBox="0 0 24 24">
+                            <svg className="highlight-uploader-spinner" fill="none" viewBox="0 0 24 24">
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
@@ -159,36 +159,36 @@ const ImageUploader = ({ images = [], onChange, apiKey, id }) => {
                         </>
                     ) : (
                         <>
-                            <svg className="image-uploader-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="highlight-uploader-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                             </svg>
                             <span>Click to upload or drag and drop images</span>
-                            <span className="image-uploader-hint">PNG, JPG, GIF up to 32MB</span>
+                            <span className="highlight-uploader-hint">PNG, JPG, GIF up to 32MB</span>
                         </>
                     )}
                 </label>
             </div>
 
             {error && (
-                <div className="image-uploader-error">
+                <div className="highlight-uploader-error">
                     {error}
                 </div>
             )}
 
             {images.length > 0 && (
-                <div className="image-uploader-preview-container">
+                <div className="highlight-uploader-preview-container">
                     {images.map((image, index) => (
-                        <div key={index} className="image-uploader-preview group">
+                        <div key={index} className="highlight-uploader-preview group">
                             <img
                                 src={image}
                                 alt={`Screenshot ${index + 1}`}
-                                className="image-uploader-preview-img"
+                                className="highlight-uploader-preview-img"
                             />
-                            <div className="image-uploader-preview-controls">
+                            <div className="highlight-uploader-preview-controls">
                                 {index > 0 && (
                                     <button
                                         onClick={() => moveImage(index, index - 1)}
-                                        className="image-uploader-preview-btn"
+                                        className="highlight-uploader-preview-btn"
                                         title="Move left"
                                     >
                                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -199,7 +199,7 @@ const ImageUploader = ({ images = [], onChange, apiKey, id }) => {
                                 {index < images.length - 1 && (
                                     <button
                                         onClick={() => moveImage(index, index + 1)}
-                                        className="image-uploader-preview-btn"
+                                        className="highlight-uploader-preview-btn"
                                         title="Move right"
                                     >
                                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -209,7 +209,7 @@ const ImageUploader = ({ images = [], onChange, apiKey, id }) => {
                                 )}
                                 <button
                                     onClick={() => handleDelete(index)}
-                                    className="image-uploader-preview-btn image-uploader-preview-btn-delete"
+                                    className="highlight-uploader-preview-btn highlight-uploader-preview-btn-delete"
                                     title="Delete"
                                 >
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -225,4 +225,4 @@ const ImageUploader = ({ images = [], onChange, apiKey, id }) => {
     );
 };
 
-export default ImageUploader;
+export default HighlightUploader;

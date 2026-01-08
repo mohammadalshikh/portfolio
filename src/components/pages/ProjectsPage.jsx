@@ -1,9 +1,9 @@
 import { useEditMode } from '../../contexts/EditModeContext';
 import EditableProjects from '../sections/EditableProjects';
-import ImageGallery from '../ImageGallery';
+import HighlightGallery from '../HighlightGallery';
 
 /**
- * ProjectsPage - Page displaying projects portfolio
+ * Projects portfolio
  */
 const ProjectsPage = () => {
     const { isEditMode, data, updateSection, hasUnsavedChanges, undo, save, isSaving } = useEditMode();
@@ -81,7 +81,7 @@ const ProjectsPage = () => {
                                 <p className="card-description">{project.description}</p>
 
                                 {project.screenshots && project.screenshots.length > 0 && (
-                                    <ImageGallery images={project.screenshots} />
+                                    <HighlightGallery images={project.screenshots} />
                                 )}
 
                                 {project.technologies && project.technologies.length > 0 && (

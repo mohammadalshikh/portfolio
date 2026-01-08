@@ -1,11 +1,12 @@
 import { useState } from 'react';
 
 /**
- * ImageGallery - Display thumbnail images with modal view and navigation
+ * Display thumbnail images with modal view and navigation
+ * for each project
  * 
  * @param {Array} images - Array of image URLs
  */
-const ImageGallery = ({ images = [] }) => {
+const HighlightGallery = ({ images = [] }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -44,18 +45,18 @@ const ImageGallery = ({ images = [] }) => {
 
     return (
         <>
-            <div className="image-gallery-container">
-                <div className="image-gallery-thumbnails">
+            <div className="highlight-gallery-container">
+                <div className="highlight-gallery-thumbnails">
                     {images.map((image, index) => (
                         <div
                             key={index}
-                            className="image-gallery-thumbnail"
+                            className="highlight-gallery-thumbnail"
                             onClick={() => openModal(index)}
                         >
                             <img
                                 src={image}
                                 alt={`Screenshot ${index + 1}`}
-                                className="image-gallery-thumbnail-img"
+                                className="highlight-gallery-thumbnail-img"
                             />
                         </div>
                     ))}
@@ -64,7 +65,7 @@ const ImageGallery = ({ images = [] }) => {
 
             {isModalOpen && (
                 <div
-                    className="image-gallery-modal"
+                    className="highlight-gallery-modal"
                     onClick={closeModal}
                     onKeyDown={handleKeyDown}
                     tabIndex={0}
@@ -72,7 +73,7 @@ const ImageGallery = ({ images = [] }) => {
                     aria-modal="true"
                 >
                     <button
-                        className="image-gallery-modal-close"
+                        className="highlight-gallery-modal-close"
                         onClick={closeModal}
                         aria-label="Close"
                     >
@@ -84,7 +85,7 @@ const ImageGallery = ({ images = [] }) => {
                     {images.length > 1 && (
                         <>
                             <button
-                                className="image-gallery-modal-nav image-gallery-modal-nav-left"
+                                className="highlight-gallery-modal-nav highlight-gallery-modal-nav-left"
                                 onClick={goToPrevious}
                                 aria-label="Previous image"
                             >
@@ -94,7 +95,7 @@ const ImageGallery = ({ images = [] }) => {
                             </button>
 
                             <button
-                                className="image-gallery-modal-nav image-gallery-modal-nav-right"
+                                className="highlight-gallery-modal-nav highlight-gallery-modal-nav-right"
                                 onClick={goToNext}
                                 aria-label="Next image"
                             >
@@ -105,14 +106,14 @@ const ImageGallery = ({ images = [] }) => {
                         </>
                     )}
 
-                    <div className="image-gallery-modal-content" onClick={(e) => e.stopPropagation()}>
+                    <div className="highlight-gallery-modal-content" onClick={(e) => e.stopPropagation()}>
                         <img
                             src={images[currentIndex]}
                             alt={`Screenshot ${currentIndex + 1}`}
-                            className="image-gallery-modal-img"
+                            className="highlight-gallery-modal-img"
                         />
                         {images.length > 1 && (
-                            <div className="image-gallery-modal-counter">
+                            <div className="highlight-gallery-modal-counter">
                                 {currentIndex + 1} / {images.length}
                             </div>
                         )}
@@ -123,4 +124,4 @@ const ImageGallery = ({ images = [] }) => {
     );
 };
 
-export default ImageGallery;
+export default HighlightGallery;

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useEditMode } from '../contexts/EditModeContext';
 
 /**
- * PasswordModal - Modal for entering/exiting edit mode
+ * Entering/exiting edit mode
  */
 const PasswordModal = ({ isOpen, onClose, isExitMode = false }) => {
     const [password, setPassword] = useState('');
@@ -77,7 +77,7 @@ const PasswordModal = ({ isOpen, onClose, isExitMode = false }) => {
                 {!isExitMode && (
                     <div className="modal-status">
                         <p className={`modal-status-text ${binConnected ? 'modal-status-connected' : 'modal-status-disconnected'}`}>
-                            {binConnected ? '● Connected to backend' : '● Backend not connected'}
+                            {binConnected ? '● Connected' : '● Disconnected'}
                         </p>
                     </div>
                 )}
@@ -94,7 +94,7 @@ const PasswordModal = ({ isOpen, onClose, isExitMode = false }) => {
                                 autoFocus
                             />
                             {error && (
-                                <div className="modal-error mt-sm">
+                                <div className="modal-error">
                                     <svg className="modal-error-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>

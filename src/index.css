@@ -346,12 +346,30 @@
         .skill-tag, .tech-tag {
             font-size: 0.978rem;
         }
+        /* Ensure editable inputs also scale on larger screens */
+        .editable-input.card-title {
+            font-size: 1.265rem;
+        }
+        .editable-input.card-subtitle {
+            font-size: 1.09rem;
+        }
+        .editable-input.card-description,
+        .editable-textarea.card-description {
+            font-size: 1.035rem;
+        }
+        .editable-textarea.section-text {
+            font-size: 1.15rem;
+        }
     }
 
     @media (max-width: 450px) {
         .page-heading {
             font-size: 2rem;
         }
+    }
+
+    .contact {
+        margin-top: 1.6rem !important;
     }
 
     .section-heading {
@@ -410,7 +428,8 @@
         font-size: 0.9rem;
         color: #b3b3b3;
         line-height: 1.6;
-        margin-bottom: 0.75rem;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
     }
 
     .card-header {
@@ -439,6 +458,112 @@
         height: 3rem;
         object-fit: contain;
         border-radius: 0.375rem;
+    }
+
+    .logo-uploader-wrapper {
+        position: relative;
+    }
+
+    .logo-uploader-input {
+        display: none;
+    }
+
+    .logo-uploader-container {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 0.375rem;
+        overflow: visible;
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #2d2d2d;
+        border: 2px dashed #3c3c3c;
+        transition: all 0.2s ease;
+    }
+
+    .logo-uploader-container:hover {
+        border-color: #569cd6;
+        background-color: #3c3c3c;
+    }
+
+    .logo-uploader-uploading {
+        cursor: wait;
+        background-color: #2d2d2d;
+    }
+
+    .logo-uploader-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .logo-uploader-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6d6d6d;
+    }
+
+    .logo-uploader-placeholder-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    .logo-uploader-spinner-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logo-uploader-spinner {
+        width: 1.5rem;
+        height: 1.5rem;
+        color: #569cd6;
+        animation: spin 1s linear infinite;
+    }
+
+    .logo-uploader-delete {
+        position: absolute;
+        top: -0.5rem;
+        right: -0.5rem;
+        z-index: 10;
+        background-color: #c42b1c;
+        color: #ffffff;
+        border: none;
+        border-radius: 50%;
+        padding: 0.3rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .logo-uploader-delete:hover {
+        background-color: #d63d2e;
+    }
+
+    .logo-uploader-delete-icon {
+        width: 0.7rem;
+        height: 0.7rem;
+        display: block;
+    }
+
+    .logo-uploader-error {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        margin-top: 0.25rem;
+        background-color: rgba(196, 43, 28, 0.2);
+        border: 1px solid #c42b1c;
+        color: #f14c4c;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        z-index: 10;
     }
 
     .tech-tags {
@@ -494,10 +619,6 @@
         margin-top: 0.75rem;
     }
 
-    .contact-section {
-        margin-top: 3rem;
-    }
-
     .contact-form {
         display: flex;
         flex-direction: column;
@@ -508,6 +629,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.25rem;
+        margin-top: 0.5rem;
     }
 
     .form-label {
@@ -625,7 +747,7 @@
         font-weight: 600;
         text-align: center;
         color: #ffffff;
-        margin-bottom: 1.5rem;
+        margin-bottom: 0.5rem;
     }
 
     .modal-status {
@@ -678,6 +800,7 @@
         gap: 0.5rem;
         color: #f14c4c;
         font-size: 0.85rem;
+        margin-top: 0.5rem;
     }
 
     .modal-error-icon {
@@ -796,6 +919,10 @@
         animation: spin 1s linear infinite;
     }
 
+    .list {
+        margin-bottom: 0.75rem !important;
+    }
+
     .editable-input {
         background-color: transparent;
         border: none;
@@ -804,8 +931,10 @@
         font-size: inherit;
         font-weight: inherit;
         font-family: inherit;
+        line-height: inherit;
+        margin-bottom: inherit;
         width: 100%;
-        padding: 0.25rem 0;
+        padding: 0;
         transition: border-color 0.2s ease;
     }
 
@@ -818,6 +947,37 @@
         color: #6d6d6d;
     }
 
+    /* Ensure editable inputs inherit card title styling */
+    .editable-input.card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 0.25rem;
+    }
+
+    .editable-input.card-subtitle {
+        font-size: 0.95rem;
+        color: #9cdcfe;
+        margin-bottom: 0.25rem;
+    }
+
+    .editable-input.card-description {
+        font-size: 0.9rem;
+        color: #b3b3b3;
+        line-height: 1.6;
+        margin-bottom: 0.75rem;
+    }
+
+    .editable-input.card-meta {
+        font-size: 0.8rem;
+        color: #9d9d9d;
+        background-color: #2d2d2d;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.25rem;
+        border-bottom: 1px solid #3c3c3c;
+        white-space: nowrap;
+    }
+
     .editable-textarea {
         background-color: transparent;
         border: 1px solid #3c3c3c;
@@ -825,10 +985,12 @@
         color: inherit;
         font-size: inherit;
         font-family: inherit;
+        line-height: inherit;
         width: 100%;
         padding: 0.5rem;
         resize: vertical;
         transition: border-color 0.2s ease;
+        margin-top: 0.5rem;
     }
 
     .editable-textarea:focus {
@@ -838,6 +1000,22 @@
 
     .editable-textarea::placeholder {
         color: #6d6d6d;
+    }
+
+    /* Ensure editable textareas inherit section text styling */
+    .editable-textarea.section-text {
+        font-size: 1rem;
+        color: #b3b3b3;
+        line-height: 1.8;
+        white-space: pre-line;
+        border: 1px solid #3c3c3c;
+        padding: 0.5rem;
+    }
+
+    .editable-textarea.card-description {
+        font-size: 0.9rem;
+        color: #b3b3b3;
+        line-height: 1.6;
     }
 
     .editable-label {
@@ -938,17 +1116,17 @@
         flex-shrink: 0;
     }
 
-    .image-gallery-container {
-        margin-bottom: 0.75rem;
+    .highlight-gallery-container {
+        margin-bottom: 1rem;
     }
 
-    .image-gallery-thumbnails {
+    .highlight-gallery-thumbnails {
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
     }
 
-    .image-gallery-thumbnail {
+    .highlight-gallery-thumbnail {
         width: 4rem;
         height: 4rem;
         border-radius: 0.375rem;
@@ -958,17 +1136,17 @@
         transition: border-color 0.2s ease;
     }
 
-    .image-gallery-thumbnail:hover {
+    .highlight-gallery-thumbnail:hover {
         border-color: #569cd6;
     }
 
-    .image-gallery-thumbnail-img {
+    .highlight-gallery-thumbnail-img {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
 
-    .image-gallery-modal {
+    .highlight-gallery-modal {
         position: fixed;
         inset: 0;
         z-index: 100;
@@ -978,7 +1156,7 @@
         background-color: rgba(0, 0, 0, 0.9);
     }
 
-    .image-gallery-modal-close {
+    .highlight-gallery-modal-close {
         position: absolute;
         top: 1rem;
         right: 1rem;
@@ -991,16 +1169,16 @@
         transition: color 0.2s ease;
     }
 
-    .image-gallery-modal-close:hover {
+    .highlight-gallery-modal-close:hover {
         color: #9d9d9d;
     }
 
-    .image-gallery-modal-close svg {
+    .highlight-gallery-modal-close svg {
         width: 2rem;
         height: 2rem;
     }
 
-    .image-gallery-modal-nav {
+    .highlight-gallery-modal-nav {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
@@ -1013,24 +1191,24 @@
         transition: color 0.2s ease;
     }
 
-    .image-gallery-modal-nav:hover {
+    .highlight-gallery-modal-nav:hover {
         color: #9d9d9d;
     }
 
-    .image-gallery-modal-nav svg {
+    .highlight-gallery-modal-nav svg {
         width: 3rem;
         height: 3rem;
     }
 
-    .image-gallery-modal-nav-left {
+    .highlight-gallery-modal-nav-left {
         left: 1rem;
     }
 
-    .image-gallery-modal-nav-right {
+    .highlight-gallery-modal-nav-right {
         right: 1rem;
     }
 
-    .image-gallery-modal-content {
+    .highlight-gallery-modal-content {
         position: relative;
         max-width: 90vw;
         max-height: 90vh;
@@ -1039,24 +1217,25 @@
         align-items: center;
     }
 
-    .image-gallery-modal-img {
+    .highlight-gallery-modal-img {
         max-width: 100%;
         max-height: 85vh;
         object-fit: contain;
         border-radius: 0.5rem;
     }
 
-    .image-gallery-modal-counter {
+    .highlight-gallery-modal-counter {
         margin-top: 1rem;
         color: #ffffff;
         font-size: 1rem;
     }
 
-    .image-uploader-container {
+    .highlight-uploader-container {
+        margin-top: 0.75rem;
         margin-bottom: 0.75rem;
     }
 
-    .image-uploader-dropzone {
+    .highlight-uploader-dropzone {
         border: 2px dashed #3c3c3c;
         border-radius: 0.5rem;
         padding: 1.5rem;
@@ -1066,20 +1245,20 @@
         cursor: pointer;
     }
 
-    .image-uploader-dropzone:hover {
+    .highlight-uploader-dropzone:hover {
         border-color: #569cd6;
     }
 
-    .image-uploader-dropzone-active {
+    .highlight-uploader-dropzone-active {
         border-color: #569cd6;
         background-color: rgba(86, 156, 214, 0.1);
     }
 
-    .image-uploader-input {
+    .highlight-uploader-input {
         display: none;
     }
 
-    .image-uploader-dropzone-label {
+    .highlight-uploader-dropzone-label {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -1088,23 +1267,23 @@
         cursor: pointer;
     }
 
-    .image-uploader-icon {
+    .highlight-uploader-icon {
         width: 2.5rem;
         height: 2.5rem;
     }
 
-    .image-uploader-spinner {
+    .highlight-uploader-spinner {
         width: 2rem;
         height: 2rem;
         animation: spin 1s linear infinite;
     }
 
-    .image-uploader-hint {
+    .highlight-uploader-hint {
         font-size: 0.75rem;
         color: #6d6d6d;
     }
 
-    .image-uploader-error {
+    .highlight-uploader-error {
         background-color: rgba(196, 43, 28, 0.2);
         border: 1px solid #c42b1c;
         color: #f14c4c;
@@ -1114,13 +1293,13 @@
         font-size: 0.85rem;
     }
 
-    .image-uploader-preview-container {
+    .highlight-uploader-preview-container {
         display: flex;
         flex-wrap: wrap;
         gap: 0.75rem;
     }
 
-    .image-uploader-preview {
+    .highlight-uploader-preview {
         position: relative;
         width: 6rem;
         height: 6rem;
@@ -1129,13 +1308,13 @@
         border: 1px solid #3c3c3c;
     }
 
-    .image-uploader-preview-img {
+    .highlight-uploader-preview-img {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
 
-    .image-uploader-preview-controls {
+    .highlight-uploader-preview-controls {
         position: absolute;
         inset: 0;
         background-color: rgba(0, 0, 0, 0);
@@ -1147,12 +1326,12 @@
         transition: all 0.2s ease;
     }
 
-    .image-uploader-preview:hover .image-uploader-preview-controls {
+    .highlight-uploader-preview:hover .highlight-uploader-preview-controls {
         background-color: rgba(0, 0, 0, 0.7);
         opacity: 1;
     }
 
-    .image-uploader-preview-btn {
+    .highlight-uploader-preview-btn {
         color: #ffffff;
         background: none;
         border: none;
@@ -1161,16 +1340,16 @@
         transition: color 0.2s ease;
     }
 
-    .image-uploader-preview-btn:hover {
+    .highlight-uploader-preview-btn:hover {
         color: #569cd6;
     }
 
-    .image-uploader-preview-btn svg {
+    .highlight-uploader-preview-btn svg {
         width: 1.25rem;
         height: 1.25rem;
     }
 
-    .image-uploader-preview-btn-delete:hover {
+    .highlight-uploader-preview-btn-delete:hover {
         color: #f14c4c;
     }
 
@@ -1203,27 +1382,10 @@
         }
     }
 
-    /* Utility classes for spacing */
-    .mt-sm {
-        margin-top: 0.5rem;
-    }
-
-    .mt-md {
-        margin-top: 0.75rem;
-    }
-
-    .mt-lg {
-        margin-top: 1rem;
-    }
-
-    .mb-sm {
-        margin-bottom: 0.5rem;
-    }
-
     /* Form field utilities */
     .card-meta-input {
-        text-align: right;
         width: auto;
+        flex-shrink: 0;
     }
 
     /* Page heading spacing for view mode */
