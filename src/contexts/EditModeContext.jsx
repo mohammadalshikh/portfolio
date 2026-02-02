@@ -143,7 +143,7 @@ export const EditModeProvider = ({ children, initialData }) => {
     };
 
     const saveChanges = async () => {
-        if (!configValid) {
+        if (!binConnected) {
             alert('Backend not configured. Changes are only saved locally.');
             setOriginalData(data);
             setIsDirty(false);
