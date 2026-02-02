@@ -20,7 +20,7 @@ const HighlightUploader = ({ images = [], onChange, apiKey, id }) => {
 
     const uploadToImageBB = async (file) => {
         if (!apiKey) {
-            throw new Error('ImageBB API key is required. Please add VITE_IMGBB_API_KEY to your .env file');
+            throw new Error('ImageBB API key is required. Please add IMGBB_API_KEY to your .env file');
         }
 
         const formData = new FormData();

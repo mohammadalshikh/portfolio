@@ -2,7 +2,7 @@ import { useState } from 'react';
 import EditableCard from '../EditableCard';
 import HighlightUploader from '../HighlightUploader';
 
-const IMGBB_API_KEY = import.meta.env.VITE_IMGBB_API_KEY;
+const IMGBB_API_KEY = import.meta.env.IMGBB_API_KEY;
 
 /**
  * Edit mode version of Projects section

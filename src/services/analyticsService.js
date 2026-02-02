@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const JSONBIN_API_KEY = import.meta.env.VITE_JSONBIN_API_KEY;
-const JSONBIN_VISITS_BIN_ID = import.meta.env.VITE_JSONBIN_VISITS_BIN_ID;
+const JSONBIN_API_KEY = import.meta.env.JSONBIN_API_KEY;
+const JSONBIN_VISITS_BIN_ID = import.meta.env.JSONBIN_VISITS_BIN_ID;
 const JSONBIN_BASE_URL = 'https://api.jsonbin.io/v3';
 const IPAPI_BASE_URL = 'https://ipapi.co/json/';
 

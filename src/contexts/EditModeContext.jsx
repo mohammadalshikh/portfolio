@@ -6,7 +6,7 @@ const EditModeContext = createContext();
 
 const verifyPassword = (password) => {
     const hash = CryptoJS.SHA256(password).toString();
-    const storedHash = import.meta.env.VITE_ADMIN_PASSWORD_HASH;
+    const storedHash = import.meta.env.PASSWORD_HASH;
     return hash === storedHash;
 };
 
