@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import CryptoJS from 'crypto-js';
-import { fetchData, saveData, validateConfig } from '../services/dataService';
+import { fetchData, fetchNotes, saveData, validateConfig } from '../services/dataService';
 
 const EditModeContext = createContext();
 
@@ -23,6 +23,8 @@ export const EditModeProvider = ({ children, initialData }) => {
     const [originalData, setOriginalData] = useState(initialData);
     const [isDirty, setIsDirty] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingNotes, setIsLoadingNotes] = useState(false);
+    const [notesLoaded, setNotesLoaded] = useState(false);
     const [configValid, setConfigValid] = useState(false);
     const [binConnected, setBinConnected] = useState(false);
 
@@ -31,7 +33,7 @@ export const EditModeProvider = ({ children, initialData }) => {
         setConfigValid(isValid);
     }, []);
 
-    // Load data from backend on mount
+    // Load main data from backend on mount (excluding notes)
     useEffect(() => {
         const loadData = async () => {
             setIsLoading(true);
@@ -40,17 +42,18 @@ export const EditModeProvider = ({ children, initialData }) => {
 
                 // Successfully fetched from bin
                 if (success) {
-                    setData(fetchedData);
-                    setOriginalData(fetchedData);
+                    // Preserve existing notes if already loaded
+                    setData(prev => ({ ...fetchedData, notes: prev.notes || {} }));
+                    setOriginalData(prev => ({ ...fetchedData, notes: prev.notes || {} }));
                     setBinConnected(true);
                 } else {
-                    setData(initialData);
-                    setOriginalData(initialData);
+                    setData(prev => ({ ...initialData, notes: prev.notes || {} }));
+                    setOriginalData(prev => ({ ...initialData, notes: prev.notes || {} }));
                     setBinConnected(false);
                 }
             } catch {
-                setData(initialData);
-                setOriginalData(initialData);
+                setData(prev => ({ ...initialData, notes: prev.notes || {} }));
+                setOriginalData(prev => ({ ...initialData, notes: prev.notes || {} }));
                 setBinConnected(false);
             } finally {
                 setIsLoading(false);
@@ -59,6 +62,49 @@ export const EditModeProvider = ({ children, initialData }) => {
 
         loadData();
     }, [initialData]);
+
+    // Function to load notes on demand (with sessionStorage caching)
+    const loadNotes = async () => {
+        if (notesLoaded || isLoadingNotes) return;
+
+        // Check sessionStorage first
+        const cachedNotes = sessionStorage.getItem('notes');
+        if (cachedNotes) {
+            try {
+                const notes = JSON.parse(cachedNotes);
+                // Set data and mark as loaded in one batch
+                setData(prev => {
+                    setNotesLoaded(true);
+                    return { ...prev, notes };
+                });
+                setOriginalData(prev => ({ ...prev, notes }));
+                return;
+            } catch {
+                // Invalid cache, proceed with fetch
+            }
+        }
+
+        setIsLoadingNotes(true);
+        try {
+            const { notes, success } = await fetchNotes();
+            if (success) {
+                // Cache in sessionStorage
+                sessionStorage.setItem('notes', JSON.stringify(notes));
+                // Set data and mark as loaded in one batch
+                setData(prev => {
+                    setNotesLoaded(true);
+                    return { ...prev, notes };
+                });
+                setOriginalData(prev => ({ ...prev, notes }));
+            } else {
+                setNotesLoaded(true);
+            }
+        } catch {
+            setNotesLoaded(true);
+        } finally {
+            setIsLoadingNotes(false);
+        }
+    };
 
     // Check if data has changed
     useEffect(() => {
@@ -139,6 +185,10 @@ export const EditModeProvider = ({ children, initialData }) => {
             ...prev,
             [section]: newValue,
         }));
+        // Update sessionStorage cache when notes are modified
+        if (section === 'notes') {
+            sessionStorage.setItem('notes', JSON.stringify(newValue));
+        }
     };
 
     const value = {
@@ -149,6 +199,9 @@ export const EditModeProvider = ({ children, initialData }) => {
         isDirty,
         hasUnsavedChanges: isDirty,
         isLoading,
+        isLoadingNotes,
+        notesLoaded,
+        loadNotes,
         isSaving: isLoading,
         configValid,
         binConnected,

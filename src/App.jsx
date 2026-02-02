@@ -4,6 +4,8 @@ import Navbar from './components/Navbar';
 import LandingPage from './components/pages/LandingPage';
 import ExperiencePage from './components/pages/ExperiencePage';
 import ProjectsPage from './components/pages/ProjectsPage';
+import NotesPage from './components/pages/NotesPage';
+import NotePage from './components/pages/NotePage';
 import PasswordModal from './components/PasswordModal';
 import { EditModeProvider, useEditMode } from './contexts/EditModeContext';
 import { fallbackData } from './fallback/fallbackData';
@@ -24,11 +26,13 @@ function AppContent() {
     return (
         <div className="app-container">
             <Navbar onEditClick={handleEditClick} />
-            
+
             <Routes>
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/experience" element={<ExperiencePage />} />
                 <Route path="/projects" element={<ProjectsPage />} />
+                <Route path="/notes" element={<NotesPage />} />
+                <Route path="/notes/:slug" element={<NotePage />} />
             </Routes>
 
             <PasswordModal

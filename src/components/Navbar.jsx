@@ -52,11 +52,22 @@ const Navbar = ({ onEditClick }) => {
                         >
                             Projects
                         </NavLink>
+                        <NavLink
+                            to="/notes"
+                            className={({ isActive }) =>
+                                `navbar-link ${isActive ? 'navbar-link-active' : ''}`
+                            }
+                        >
+                            Notes
+                        </NavLink>
                         <button
                             onClick={onEditClick}
-                            className="navbar-link navbar-edit-btn"
+                            className="navbar-link navbar-edit-bullet"
+                            aria-label="Edit mode"
                         >
-                            Edit
+                            <svg className="navbar-edit-bullet-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="4" />
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -124,14 +135,26 @@ const Navbar = ({ onEditClick }) => {
                     >
                         Projects
                     </NavLink>
+                    <NavLink
+                        to="/notes"
+                        className={({ isActive }) =>
+                            `navbar-dropdown-link ${isActive ? 'navbar-link-active' : ''}`
+                        }
+                        onClick={closeMenu}
+                    >
+                        Notes
+                    </NavLink>
                     <button
                         onClick={() => {
                             closeMenu();
                             onEditClick();
                         }}
-                        className="navbar-dropdown-link navbar-edit-btn"
+                        className="navbar-dropdown-link navbar-edit-bullet"
+                        aria-label="Edit mode"
                     >
-                        Edit
+                        <svg className="navbar-edit-bullet-icon" fill="currentColor" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="4" />
+                        </svg>
                     </button>
 
                     <div className="navbar-dropdown-socials">
