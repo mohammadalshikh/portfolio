@@ -1,11 +1,14 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState, useRef } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 /**
  * Top navigation bar
  */
 const Navbar = ({ onEditClick }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const navigate = useNavigate();
+    const longPressTimer = useRef(null);
+    const isLongPress = useRef(false);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -15,24 +18,52 @@ const Navbar = ({ onEditClick }) => {
         setIsMenuOpen(false);
     };
 
+    const handleLogoMouseDown = () => {
+        isLongPress.current = false;
+        longPressTimer.current = setTimeout(() => {
+            isLongPress.current = true;
+            onEditClick();
+        }, 1000);
+    };
+
+    const handleLogoMouseUp = () => {
+        if (longPressTimer.current) {
+            clearTimeout(longPressTimer.current);
+            longPressTimer.current = null;
+        }
+    };
+
+    const handleLogoClick = (e) => {
+        if (isLongPress.current) {
+            e.preventDefault();
+            isLongPress.current = false;
+        } else {
+            closeMenu();
+            navigate('/');
+        }
+    };
+
     return (
         <nav className="navbar">
             <div className="navbar-container">
                 {/* Left section */}
                 <div className="navbar-left">
-                    <NavLink
-                        to="/"
-                        className={({ isActive }) =>
-                            `navbar-logo ${isActive ? 'navbar-link-active' : ''}`
-                        }
-                        onClick={closeMenu}
+                    <div
+                        className="navbar-logo"
+                        onMouseDown={handleLogoMouseDown}
+                        onMouseUp={handleLogoMouseUp}
+                        onMouseLeave={handleLogoMouseUp}
+                        onTouchStart={handleLogoMouseDown}
+                        onTouchEnd={handleLogoMouseUp}
+                        onClick={handleLogoClick}
+                        style={{ cursor: 'pointer' }}
                     >
                         <img
                             src="/logo-white-font-tr-full-size.png"
                             alt="MA Logo"
                             className="navbar-logo-img"
                         />
-                    </NavLink>
+                    </div>
 
                     {/* Desktop nav links */}
                     <div className="navbar-links-desktop">
@@ -60,15 +91,6 @@ const Navbar = ({ onEditClick }) => {
                         >
                             Notes
                         </NavLink>
-                        <button
-                            onClick={onEditClick}
-                            className="navbar-link navbar-edit-bullet"
-                            aria-label="Edit mode"
-                        >
-                            <svg className="navbar-edit-bullet-icon" fill="currentColor" viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="4" />
-                            </svg>
-                        </button>
                     </div>
                 </div>
 
@@ -144,18 +166,6 @@ const Navbar = ({ onEditClick }) => {
                     >
                         Notes
                     </NavLink>
-                    <button
-                        onClick={() => {
-                            closeMenu();
-                            onEditClick();
-                        }}
-                        className="navbar-dropdown-link navbar-edit-bullet"
-                        aria-label="Edit mode"
-                    >
-                        <svg className="navbar-edit-bullet-icon" fill="currentColor" viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="4" />
-                        </svg>
-                    </button>
 
                     <div className="navbar-dropdown-socials">
                         <a
