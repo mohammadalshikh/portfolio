@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useEditMode } from '../contexts/EditModeContext';
 
 /**
  * Top navigation bar
@@ -9,6 +10,7 @@ const Navbar = ({ onEditClick }) => {
     const navigate = useNavigate();
     const longPressTimer = useRef(null);
     const isLongPress = useRef(false);
+    const { canAccessNotes } = useEditMode();
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -46,7 +48,6 @@ const Navbar = ({ onEditClick }) => {
     return (
         <nav className="navbar">
             <div className="navbar-container">
-                {/* Left section */}
                 <div className="navbar-left">
                     <div
                         className="navbar-logo"
@@ -65,7 +66,6 @@ const Navbar = ({ onEditClick }) => {
                         />
                     </div>
 
-                    {/* Desktop nav links */}
                     <div className="navbar-links-desktop">
                         <NavLink
                             to="/experience"
@@ -83,18 +83,19 @@ const Navbar = ({ onEditClick }) => {
                         >
                             Projects
                         </NavLink>
-                        <NavLink
-                            to="/notes"
-                            className={({ isActive }) =>
-                                `navbar-link ${isActive ? 'navbar-link-active' : ''}`
-                            }
-                        >
-                            Notes
-                        </NavLink>
+                        {canAccessNotes && (
+                            <NavLink
+                                to="/notes"
+                                className={({ isActive }) =>
+                                    `navbar-link ${isActive ? 'navbar-link-active' : ''}`
+                                }
+                            >
+                                Notes
+                            </NavLink>
+                        )}
                     </div>
                 </div>
 
-                {/* Right section - desktop */}
                 <div className="navbar-right-desktop">
                     <a
                         href="https://github.com/mohammadalshikh"
@@ -120,7 +121,6 @@ const Navbar = ({ onEditClick }) => {
                     </a>
                 </div>
 
-                {/* Mobile menu button */}
                 <button
                     onClick={toggleMenu}
                     className="navbar-menu-btn"
@@ -136,7 +136,6 @@ const Navbar = ({ onEditClick }) => {
                 </button>
             </div>
 
-            {/* Mobile dropdown menu */}
             <div className={`navbar-dropdown ${isMenuOpen ? 'navbar-dropdown-open' : ''}`}>
                 <div className="navbar-dropdown-content">
                     <NavLink
@@ -157,15 +156,17 @@ const Navbar = ({ onEditClick }) => {
                     >
                         Projects
                     </NavLink>
-                    <NavLink
-                        to="/notes"
-                        className={({ isActive }) =>
-                            `navbar-dropdown-link ${isActive ? 'navbar-link-active' : ''}`
-                        }
-                        onClick={closeMenu}
-                    >
-                        Notes
-                    </NavLink>
+                    {canAccessNotes && (
+                        <NavLink
+                            to="/notes"
+                            className={({ isActive }) =>
+                                `navbar-dropdown-link ${isActive ? 'navbar-link-active' : ''}`
+                            }
+                            onClick={closeMenu}
+                        >
+                            Notes
+                        </NavLink>
+                    )}
 
                     <div className="navbar-dropdown-socials">
                         <a

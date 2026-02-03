@@ -1,20 +1,31 @@
 import { useState, useEffect } from 'react';
-import { useEditMode } from '../contexts/EditModeContext';
+import { useEditMode, ACCESS_MODES } from '../contexts/EditModeContext';
 
 /**
- * Entering/exiting edit mode
+ * Entering/exiting edit mode or view mode
  */
-const PasswordModal = ({ isOpen, onClose, isExitMode = false }) => {
+const PasswordModal = ({ isOpen, onClose }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const { enterEditMode, exitEditMode, binConnected } = useEditMode();
+    const [selectedMode, setSelectedMode] = useState(ACCESS_MODES.VIEW);
+    const {
+        enterAccessMode,
+        exitAccessMode,
+        switchAccessMode,
+        isAuthenticated,
+        accessMode,
+        binConnected
+    } = useEditMode();
+
+    const isExitMode = isAuthenticated;
 
     useEffect(() => {
         if (isOpen) {
             setPassword('');
             setError('');
+            setSelectedMode(isAuthenticated ? accessMode : ACCESS_MODES.VIEW);
         }
-    }, [isOpen]);
+    }, [isOpen, isAuthenticated, accessMode]);
 
     useEffect(() => {
         const handleEscape = (e) => {
@@ -28,16 +39,29 @@ const PasswordModal = ({ isOpen, onClose, isExitMode = false }) => {
 
     if (!isOpen) return null;
 
+    const handleModeChange = (mode) => {
+        if (isAuthenticated && mode !== accessMode) {
+            const success = switchAccessMode(mode);
+            if (success) {
+                setSelectedMode(mode);
+            }
+        } else {
+            // Not authenticated 
+            setSelectedMode(mode);
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if (isExitMode) {
-            const success = exitEditMode();
+            const success = exitAccessMode();
             if (success) {
                 onClose();
             }
         } else {
-            const success = enterEditMode(password);
+            // Not authenticated
+            const success = enterAccessMode(password, selectedMode);
             if (success) {
                 onClose();
             } else {
@@ -53,34 +77,49 @@ const PasswordModal = ({ isOpen, onClose, isExitMode = false }) => {
         }
     };
 
+    const EditIcon = () => (
+        <svg className="mode-selector-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        </svg>
+    );
+
+    const ViewIcon = () => (
+        <svg className="mode-selector-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+    );
+
     return (
         <div className="modal-overlay" onClick={handleOverlayClick}>
             <div className="modal-container">
-                <div className="modal-icon-wrapper">
-                    <div className="modal-icon-bg">
-                        {isExitMode ? (
-                            <svg className="modal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                            </svg>
-                        ) : (
-                            <svg className="modal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                            </svg>
-                        )}
-                    </div>
+                <div className="modal-mode-selector">
+                    <button
+                        type="button"
+                        className={`mode-selector-btn ${selectedMode === ACCESS_MODES.VIEW ? 'mode-selector-btn-active' : ''}`}
+                        onClick={() => handleModeChange(ACCESS_MODES.VIEW)}
+                        title="View Mode"
+                        aria-label="View Mode"
+                    >
+                        <ViewIcon />
+                    </button>
+                    <button
+                        type="button"
+                        className={`mode-selector-btn ${selectedMode === ACCESS_MODES.EDIT ? 'mode-selector-btn-active' : ''}`}
+                        onClick={() => handleModeChange(ACCESS_MODES.EDIT)}
+                        title="Edit Mode"
+                        aria-label="Edit Mode"
+                    >
+                        <EditIcon />
+                    </button>
                 </div>
 
-                <h2 className="modal-title">
-                    {isExitMode ? 'Exit edit mode' : 'Enter edit mode'}
-                </h2>
 
-                {!isExitMode && (
-                    <div className="modal-status">
-                        <p className={`modal-status-text ${binConnected ? 'modal-status-connected' : 'modal-status-disconnected'}`}>
-                            {binConnected ? '● Connected' : '● Disconnected'}
-                        </p>
-                    </div>
-                )}
+                <div className="modal-status">
+                    <p className={`modal-status-text ${binConnected ? 'modal-status-connected' : 'modal-status-disconnected'}`}>
+                        {binConnected ? '● Connected' : '● Disconnected'}
+                    </p>
+                </div>
 
                 <form onSubmit={handleSubmit} className="modal-form">
                     {!isExitMode && (
@@ -108,12 +147,21 @@ const PasswordModal = ({ isOpen, onClose, isExitMode = false }) => {
                         <button type="button" onClick={onClose} className="modal-btn modal-btn-cancel">
                             Cancel
                         </button>
-                        <button
-                            type="submit"
-                            className={`modal-btn ${isExitMode ? 'modal-btn-danger' : 'modal-btn-primary'}`}
-                        >
-                            {isExitMode ? 'Exit' : 'Unlock'}
-                        </button>
+                        {isExitMode ? (
+                            <button
+                                type="submit"
+                                className="modal-btn modal-btn-danger"
+                            >
+                                Exit
+                            </button>
+                        ) : (
+                            <button
+                                type="submit"
+                                className="modal-btn modal-btn-primary"
+                            >
+                                Unlock
+                            </button>
+                        )}
                     </div>
                 </form>
             </div>

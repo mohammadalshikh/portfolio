@@ -752,6 +752,49 @@
         }
     }
 
+    .modal-mode-selector {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .mode-selector-btn {
+        width: 3.5rem;
+        height: 3.5rem;
+        background-color: #3c3c3c;
+        border: 2px solid transparent;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .mode-selector-btn:hover {
+        background-color: #4a4a4a;
+    }
+
+    .mode-selector-btn-active {
+        border-color: #569cd6;
+        background-color: #2d4a6f;
+    }
+
+    .mode-selector-btn-active:hover {
+        background-color: #365880;
+    }
+
+    .mode-selector-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        color: #9d9d9d;
+    }
+
+    .mode-selector-btn-active .mode-selector-icon {
+        color: #569cd6;
+    }
+
     .modal-icon-wrapper {
         display: flex;
         justify-content: center;
@@ -772,14 +815,6 @@
         width: 1.5rem;
         height: 1.5rem;
         color: #569cd6;
-    }
-
-    .modal-title {
-        font-size: 1.25rem;
-        font-weight: 600;
-        text-align: center;
-        color: #ffffff;
-        margin-bottom: 0.5rem;
     }
 
     .modal-status {
@@ -1417,19 +1452,16 @@
         }
     }
 
-    /* Form field utilities */
     .card-meta-input {
         width: auto;
         flex-shrink: 0;
     }
 
-    /* Page heading spacing for view mode */
     .page-heading-static {
         margin-bottom: 1.5rem;
         margin-top: 2rem;
     }
 
-    /* Notes page styles */
     .notes-grid {
         display: flex;
         flex-direction: column;
@@ -1465,7 +1497,6 @@
         word-break: break-word;
     }
 
-    /* Note modal styles */
     .note-modal-container {
         background-color: #252526;
         border: 1px solid #3c3c3c;
@@ -1533,7 +1564,6 @@
         width: 100%;
     }
 
-    /* Single note page styles */
     .note-back-btn {
         display: inline-flex;
         align-items: center;
@@ -1580,7 +1610,6 @@
         text-wrap: auto;
     }
 
-    /* Notes loading state */
     .notes-loading {
         display: flex;
         align-items: center;
@@ -1597,7 +1626,6 @@
         animation: spin 1s linear infinite;
     }
 
-    /* Note title - uses container query width for proportional sizing */
     .note-title {
         font-family: 'Georgia', serif;
         font-size: clamp(1.6rem, 5.5cqw, 2.5rem);
@@ -1608,7 +1636,6 @@
         width: 100%;
     }
 
-    /* Note title input for editing */
     .note-title-input {
         background: transparent;
         border: none;
@@ -1624,7 +1651,6 @@
         color: #666;
     }
 
-    /* Note content textarea for editing - inherits from .note-text */
     .note-content-textarea {
         min-height: 400px;
         resize: none;
@@ -1642,7 +1668,6 @@
         color: #555;
     }
 
-    /* Edit bullet button in navbar */
     .navbar-edit-bullet {
         opacity: 0.4;
         transition: opacity 0.2s ease;

@@ -30,7 +30,6 @@ const NotePage = () => {
     const { data, isEditMode, updateSection, loadNotes, isLoading, isLoadingNotes, notesLoaded } = useEditMode();
     const { notes = {} } = data;
 
-    // Load notes when page is visited directly
     useEffect(() => {
         loadNotes();
     }, [loadNotes]);
@@ -53,7 +52,6 @@ const NotePage = () => {
         const newTitle = e.target.value;
         setEditedTitle(newTitle);
 
-        // Update in context
         updateSection('notes', {
             ...notes,
             [slug]: {
@@ -67,7 +65,6 @@ const NotePage = () => {
         const newContent = e.target.value;
         setEditedContent(newContent);
 
-        // Update in context - store as JSON array with single text block
         const contentArray = [{ type: 'text', content: newContent }];
         updateSection('notes', {
             ...notes,
@@ -78,50 +75,31 @@ const NotePage = () => {
         });
     }, [notes, slug, updateSection]);
 
-    // Show loading spinner until notes are fully loaded
-    if (isLoading || isLoadingNotes || !notesLoaded) {
-        return (
-            <div className="page-container">
-                <div className="notes-loading">
-                    <svg className="notes-loading-spinner" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                    <span>Loading notes...</span>
+    const isLoadingNote = isLoading || isLoadingNotes || !notesLoaded;
+
+    const renderContent = () => {
+        if (isLoadingNote) {
+            return (
+                <div className="note-content">
+                    <div className="notes-loading">
+                        <svg className="notes-loading-spinner" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        <span>Loading note...</span>
+                    </div>
                 </div>
-            </div>
-        );
-    }
+            );
+        }
 
-    if (!note) {
+        if (!note) {
+            return (
+                <div className="note-content">
+                    <h1 className="note-title">Note not found</h1>
+                </div>
+            );
+        }
+
         return (
-            <div className="page-container">
-                <button
-                    onClick={() => navigate('/notes')}
-                    className="note-back-btn"
-                >
-                    <svg className="note-back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
-                    Back to Notes
-                </button>
-                <h1 className="page-heading page-heading-static">Note Not Found</h1>
-                <p className="empty-state">The note you're looking for doesn't exist.</p>
-            </div>
-        );
-    }
-
-    return (
-        <div className="page-container">
-            <button
-                onClick={() => navigate('/notes')}
-                className="note-back-btn"
-            >
-                <svg className="note-back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Back to Notes
-            </button>
-
             <div className="note-content">
                 {isEditMode ? (
                     <>
@@ -150,6 +128,22 @@ const NotePage = () => {
                     </>
                 )}
             </div>
+        );
+    };
+
+    return (
+        <div className="page-container">
+            <button
+                onClick={() => navigate('/notes')}
+                className="note-back-btn"
+            >
+                <svg className="note-back-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Notes
+            </button>
+
+            {renderContent()}
         </div>
     );
 };
