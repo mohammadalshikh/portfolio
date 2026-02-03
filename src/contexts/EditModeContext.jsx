@@ -4,77 +4,10 @@ import { fetchData, saveData, validateConfig } from '../services/dataService';
 
 const EditModeContext = createContext();
 
-const SESSION_COOKIE_NAME = '_ma_sess';
-const SESSION_EXPIRY_MINUTES = 30;
-
 const verifyPassword = (password) => {
     const hash = CryptoJS.SHA256(password).toString();
     const storedHash = import.meta.env.PASSWORD_HASH;
     return hash === storedHash;
-};
-
-
-const setSessionCookie = () => {
-    const expiryDate = new Date();
-    expiryDate.setTime(expiryDate.getTime() + (SESSION_EXPIRY_MINUTES * 60 * 1000));
-
-    const payload = JSON.stringify({ mode: 'edit', exp: expiryDate.getTime() });
-    const signature = CryptoJS.HmacSHA256(payload, import.meta.env.PASSWORD_HASH || 'fallback').toString();
-    const token = btoa(payload) + '.' + signature;
-
-    const secure = window.location.protocol === 'https:' ? '; Secure' : '';
-    document.cookie = `${SESSION_COOKIE_NAME}=${token}; expires=${expiryDate.toUTCString()}; path=/; SameSite=Strict${secure}`;
-};
-
-
-const getSessionCookie = () => {
-    const cookies = document.cookie.split(';');
-    for (const cookie of cookies) {
-        const trimmed = cookie.trim();
-        const eqIndex = trimmed.indexOf('=');
-        if (eqIndex === -1) continue;
-
-        const name = trimmed.substring(0, eqIndex);
-        const value = trimmed.substring(eqIndex + 1);
-
-        if (name === SESSION_COOKIE_NAME && value) {
-            try {
-                const dotIndex = value.lastIndexOf('.');
-                if (dotIndex === -1) {
-                    clearSessionCookie();
-                    return false;
-                }
-
-                const payloadB64 = value.substring(0, dotIndex);
-                const signature = value.substring(dotIndex + 1);
-                const payload = atob(payloadB64);
-                const { mode, exp } = JSON.parse(payload);
-
-                const expectedSignature = CryptoJS.HmacSHA256(payload, import.meta.env.PASSWORD_HASH || 'fallback').toString();
-                if (signature !== expectedSignature) {
-                    clearSessionCookie();
-                    return false;
-                }
-
-                if (Date.now() > exp) {
-                    clearSessionCookie();
-                    return false;
-                }
-
-                if (mode === 'edit') {
-                    return true;
-                }
-            } catch {
-                clearSessionCookie();
-                return false;
-            }
-        }
-    }
-    return false;
-};
-
-const clearSessionCookie = () => {
-    document.cookie = `${SESSION_COOKIE_NAME}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict`;
 };
 
 const sanitizeData = (data) => {
@@ -101,9 +34,7 @@ const sanitizeData = (data) => {
 };
 
 export const EditModeProvider = ({ children, initialData }) => {
-    const initialSession = getSessionCookie();
-
-    const [isEditMode, setIsEditMode] = useState(initialSession);
+    const [isEditMode, setIsEditMode] = useState(false);
     const [data, setData] = useState(initialData);
     const [originalData, setOriginalData] = useState(initialData);
     const [isDirty, setIsDirty] = useState(false);
@@ -154,7 +85,6 @@ export const EditModeProvider = ({ children, initialData }) => {
     const enterEditMode = useCallback((password) => {
         if (verifyPassword(password)) {
             setIsEditMode(true);
-            setSessionCookie();
             return true;
         }
         return false;
@@ -162,8 +92,8 @@ export const EditModeProvider = ({ children, initialData }) => {
 
     const exitEditMode = useCallback(() => {
         if (isDirty) {
-            const confirmed = window.confirm(
-                'You have unsaved changes. Are you sure you want to exit? Your changes will be lost.'
+            const confirmed = window
+                .confirm('You have unsaved changes. Are you sure you want to exit? Your changes will be lost.'
             );
             if (!confirmed) {
                 return false;
@@ -173,7 +103,6 @@ export const EditModeProvider = ({ children, initialData }) => {
         setIsEditMode(false);
         setData(originalData);
         setIsDirty(false);
-        clearSessionCookie();
         return true;
     }, [isDirty, originalData]);
 
