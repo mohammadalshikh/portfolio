@@ -18,7 +18,6 @@ const EditableCard = ({
     draggedCardHeight = null,
     isDropping = false
 }) => {
-    // Use controlled state if provided, otherwise use internal state
     const [internalExpanded, setInternalExpanded] = useState(isNew);
     const isExpanded = controlledExpanded !== undefined ? controlledExpanded : internalExpanded;
 
@@ -30,6 +29,7 @@ const EditableCard = ({
     const currentHoverIndex = useRef(index);
     const cardHeight = useRef(0);
     const isDraggingRef = useRef(false);
+    const justFinishedDragging = useRef(false);
 
     useEffect(() => {
         if (!isDraggingRef.current) {
@@ -80,19 +80,26 @@ const EditableCard = ({
         const fromIndex = dragStartIndex.current;
         const toIndex = currentHoverIndex.current;
 
+        const wasDragging = isDraggingRef.current;
         isDraggingRef.current = false;
 
-        if (onDragEnd) {
+        if (wasDragging && onDragEnd) {
+            justFinishedDragging.current = true;
             onDragEnd(fromIndex, toIndex);
+
+            setTimeout(() => {
+                justFinishedDragging.current = false;
+            }, 100);
         }
     }, [handleMouseMove, onDragEnd]);
 
     const handleMouseDown = (e) => {
-        if (!canDrag) return;
-
         if (e.target.closest('button')) return;
 
-        e.preventDefault();
+        const mouseDownPos = { x: e.clientX, y: e.clientY };
+        const mouseDownTime = Date.now();
+
+        if (!canDrag) return;
 
         const rect = cardRef.current.getBoundingClientRect();
         cardHeight.current = rect.height;
@@ -100,13 +107,42 @@ const EditableCard = ({
         dragStartIndex.current = index;
         currentHoverIndex.current = index;
 
-        isDraggingRef.current = true;
-        setIsDragging(true);
-        setDragOffset(0);
+        const dragDelay = setTimeout(() => {
+            isDraggingRef.current = true;
+            setIsDragging(true);
+            setDragOffset(0);
 
-        if (onDragStart) {
-            onDragStart(index, cardHeight.current, cardHeight.current);
-        }
+            if (onDragStart) {
+                onDragStart(index, cardHeight.current, cardHeight.current);
+            }
+        }, 150);
+
+        const handleMouseMoveStart = (moveEvent) => {
+            const deltaX = Math.abs(moveEvent.clientX - mouseDownPos.x);
+            const deltaY = Math.abs(moveEvent.clientY - mouseDownPos.y);
+
+            if (deltaX > 5 || deltaY > 5) {
+                clearTimeout(dragDelay);
+                if (!isDraggingRef.current) {
+                    isDraggingRef.current = true;
+                    setIsDragging(true);
+                    setDragOffset(0);
+
+                    if (onDragStart) {
+                        onDragStart(index, cardHeight.current, cardHeight.current);
+                    }
+                }
+            }
+        };
+
+        const handleMouseUpLocal = () => {
+            clearTimeout(dragDelay);
+            document.removeEventListener('mousemove', handleMouseMoveStart);
+            document.removeEventListener('mouseup', handleMouseUpLocal);
+        };
+
+        document.addEventListener('mousemove', handleMouseMoveStart);
+        document.addEventListener('mouseup', handleMouseUpLocal);
 
         document.addEventListener('mousemove', handleMouseMove);
         document.addEventListener('mouseup', handleMouseUp);
@@ -247,32 +283,14 @@ const EditableCard = ({
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
+            onClick={(e) => {
+                if (isDragging || isDraggingRef.current || justFinishedDragging.current) return;
+                const target = e.target;
+                if (target.closest('button, input, textarea, select, a, [contenteditable="true"]')) return;
+                handleExpandToggle();
+            }}
         >
             <div className="editable-card-actions">
-                <button
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        handleExpandToggle();
-                    }}
-                    onMouseDown={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                    }}
-                    className="editable-card-expand"
-                    title={isExpanded ? 'Collapse' : 'Expand'}
-                    aria-label={isExpanded ? 'Collapse card' : 'Expand card'}
-                >
-                    {isExpanded ? (
-                        <svg className="editable-card-expand-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                        </svg>
-                    ) : (
-                        <svg className="editable-card-expand-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                    )}
-                </button>
                 <button
                     onClick={(e) => {
                         e.stopPropagation();
