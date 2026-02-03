@@ -153,5 +153,4 @@ export const fallbackData = {
             "image": concordia
         }
     ],
-    notes: {},
 };

@@ -1,13 +1,11 @@
 import { useState, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useEditMode } from '../contexts/EditModeContext';
 
 const Navbar = ({ onEditClick }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();
     const longPressTimer = useRef(null);
     const isLongPress = useRef(false);
-    const { canAccessNotes } = useEditMode();
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -80,16 +78,6 @@ const Navbar = ({ onEditClick }) => {
                         >
                             Projects
                         </NavLink>
-                        {canAccessNotes && (
-                            <NavLink
-                                to="/notes"
-                                className={({ isActive }) =>
-                                    `navbar-link ${isActive ? 'navbar-link-active' : ''}`
-                                }
-                            >
-                                Notes
-                            </NavLink>
-                        )}
                     </div>
                 </div>
 
@@ -153,17 +141,6 @@ const Navbar = ({ onEditClick }) => {
                     >
                         Projects
                     </NavLink>
-                    {canAccessNotes && (
-                        <NavLink
-                            to="/notes"
-                            className={({ isActive }) =>
-                                `navbar-dropdown-link ${isActive ? 'navbar-link-active' : ''}`
-                            }
-                            onClick={closeMenu}
-                        >
-                            Notes
-                        </NavLink>
-                    )}
 
                     <div className="navbar-dropdown-socials">
                         <a

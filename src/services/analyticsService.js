@@ -5,9 +5,6 @@ const JSONBIN_VISITS_BIN_ID = import.meta.env.JSONBIN_VISITS_BIN_ID;
 const JSONBIN_BASE_URL = 'https://api.jsonbin.io/v3';
 const IPAPI_BASE_URL = 'https://ipapi.co/json/';
 
-/**
- * Get browser information
- */
 const getBrowserInfo = () => {
     const ua = navigator.userAgent;
     let browserName = 'Unknown';
@@ -29,13 +26,9 @@ const getBrowserInfo = () => {
         browserName = 'Opera';
         browserVersion = ua.match(/OPR\/(\d+\.\d+)/)?.[1] || 'Unknown';
     }
-
     return { browserName, browserVersion };
 };
 
-/**
- * Get device information
- */
 const getDeviceInfo = () => {
     const ua = navigator.userAgent;
     let device = 'Desktop';
@@ -47,13 +40,9 @@ const getDeviceInfo = () => {
             device = 'Mobile';
         }
     }
-
     return device;
 };
 
-/**
- * Get operating system information
- */
 const getOSInfo = () => {
     const ua = navigator.userAgent;
     let os = 'Unknown';
@@ -69,13 +58,9 @@ const getOSInfo = () => {
     } else if (ua.indexOf('like Mac') > -1) {
         os = 'iOS';
     }
-
     return os;
 };
 
-/**
- * Get location information using ipapi.co
- */
 const getLocationInfo = async () => {
     try {
         const response = await axios.get(IPAPI_BASE_URL);
@@ -93,9 +78,6 @@ const getLocationInfo = async () => {
     }
 };
 
-/**
- * Format date in EST timezone as DD-MM-YYYY HH:mm
- */
 const getESTTimestamp = () => {
     const date = new Date();
     const options = {
@@ -118,16 +100,10 @@ const getESTTimestamp = () => {
     return `${day}-${month}-${year} ${hours}:${minutes}`;
 };
 
-/**
- * Get browser language
- */
 const getBrowserLanguage = () => {
     return navigator.language || navigator.userLanguage || 'Unknown';
 };
 
-/**
- * Track visit analytics and increment count
- */
 export const recordVisit = async () => {
     try {
         const { browserName, browserVersion } = getBrowserInfo();

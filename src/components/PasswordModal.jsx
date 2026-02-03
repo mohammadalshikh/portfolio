@@ -1,28 +1,24 @@
 import { useState, useEffect } from 'react';
-import { useEditMode, ACCESS_MODES } from '../contexts/EditModeContext';
+import { useEditMode } from '../contexts/EditModeContext';
 
 const PasswordModal = ({ isOpen, onClose }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const [selectedMode, setSelectedMode] = useState(ACCESS_MODES.VIEW);
     const {
-        enterAccessMode,
-        exitAccessMode,
-        switchAccessMode,
-        isAuthenticated,
-        accessMode,
+        enterEditMode,
+        exitEditMode,
+        isEditMode,
         binConnected
     } = useEditMode();
 
-    const isExitMode = isAuthenticated;
+    const isExitMode = isEditMode;
 
     useEffect(() => {
         if (isOpen) {
             setPassword('');
             setError('');
-            setSelectedMode(isAuthenticated ? accessMode : ACCESS_MODES.VIEW);
         }
-    }, [isOpen, isAuthenticated, accessMode]);
+    }, [isOpen]);
 
     useEffect(() => {
         const handleEscape = (e) => {
@@ -36,29 +32,16 @@ const PasswordModal = ({ isOpen, onClose }) => {
 
     if (!isOpen) return null;
 
-    const handleModeChange = (mode) => {
-        if (isAuthenticated && mode !== accessMode) {
-            const success = switchAccessMode(mode);
-            if (success) {
-                setSelectedMode(mode);
-            }
-        } else {
-            // Not authenticated 
-            setSelectedMode(mode);
-        }
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
         if (isExitMode) {
-            const success = exitAccessMode();
+            const success = exitEditMode();
             if (success) {
                 onClose();
             }
         } else {
-            // Not authenticated
-            const success = enterAccessMode(password, selectedMode);
+            const success = enterEditMode(password);
             if (success) {
                 onClose();
             } else {
@@ -74,43 +57,16 @@ const PasswordModal = ({ isOpen, onClose }) => {
         }
     };
 
-    const EditIcon = () => (
-        <svg className="mode-selector-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-        </svg>
-    );
-
-    const ViewIcon = () => (
-        <svg className="mode-selector-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-        </svg>
-    );
-
     return (
         <div className="modal-overlay" onClick={handleOverlayClick}>
             <div className="modal-container">
-                <div className="modal-mode-selector">
-                    <button
-                        type="button"
-                        className={`mode-selector-btn ${selectedMode === ACCESS_MODES.VIEW ? 'mode-selector-btn-active' : ''}`}
-                        onClick={() => handleModeChange(ACCESS_MODES.VIEW)}
-                        title="View Mode"
-                        aria-label="View Mode"
-                    >
-                        <ViewIcon />
-                    </button>
-                    <button
-                        type="button"
-                        className={`mode-selector-btn ${selectedMode === ACCESS_MODES.EDIT ? 'mode-selector-btn-active' : ''}`}
-                        onClick={() => handleModeChange(ACCESS_MODES.EDIT)}
-                        title="Edit Mode"
-                        aria-label="Edit Mode"
-                    >
-                        <EditIcon />
-                    </button>
+                <div className="modal-icon-wrapper">
+                    <div className="modal-icon-bg">
+                        <svg className="modal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                    </div>
                 </div>
-
 
                 <div className="modal-status">
                     <p className={`modal-status-text ${binConnected ? 'modal-status-connected' : 'modal-status-disconnected'}`}>
