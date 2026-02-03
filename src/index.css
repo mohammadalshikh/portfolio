@@ -1622,73 +1622,6 @@
         word-break: break-word;
     }
 
-    .note-modal-container {
-        background-color: #252526;
-        border: 1px solid #3c3c3c;
-        border-radius: 0.5rem;
-        padding: 1.5rem;
-        max-width: 600px;
-        width: 90%;
-        max-height: 85vh;
-        overflow-y: auto;
-        animation: slideUp 0.3s ease-out;
-        position: relative;
-    }
-
-    .note-modal-close {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background-color: #2d2d2d;
-        border: none;
-        color: #9d9d9d;
-        cursor: pointer;
-        padding: 0.5rem;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .note-modal-close-icon {
-        width: 1.25rem;
-        height: 1.25rem;
-    }
-
-    .note-modal-form {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
-    .note-modal-textarea {
-        background-color: #1e1e1e;
-        border: 1px solid #3c3c3c;
-        border-radius: 0.375rem;
-        padding: 0.75rem;
-        color: #d4d4d4;
-        font-size: 0.9rem;
-        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-        resize: vertical;
-        min-height: 150px;
-        transition: border-color 0.2s ease;
-        width: 100%;
-        line-height: 1.6;
-    }
-
-    .note-modal-textarea:focus {
-        outline: none;
-        border-color: #569cd6;
-    }
-
-    .note-modal-textarea::placeholder {
-        color: #6d6d6d;
-    }
-
-    .note-modal-submit {
-        width: 100%;
-    }
-
     .note-back-btn {
         display: inline-flex;
         align-items: center;
@@ -1699,8 +1632,6 @@
         border: none;
         cursor: pointer;
         padding: 0;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
         transition: color 0.2s ease;
         font-family: inherit;
     }
@@ -1761,10 +1692,19 @@
         width: 100%;
     }
 
+    .note-title-row {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
     .note-title-input {
         background: transparent;
         border: none;
         outline: none;
+        flex: 1;
     }
 
     .note-title-input-edit {
@@ -1777,11 +1717,14 @@
     }
 
     .note-content-textarea {
-        min-height: 400px;
-        resize: none;
+        height: fit-content;
+        min-height: 100px;
+        resize: vertical;
         outline: none;
         border: none;
         width: 100%;
+        overflow-wrap: break-word;
+        field-sizing: content;
     }
 
     .note-content-textarea-edit {
@@ -1793,12 +1736,64 @@
         color: #555;
     }
 
-    .navbar-edit-bullet {
-        opacity: 0.4;
-        transition: opacity 0.2s ease;
-        background: none;
+    .note-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        margin-top: 2rem;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .note-url-container {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        font-size: 0.875rem;
+    }
+
+    .note-url-label {
+        color: #888;
+    }
+
+    .note-url-input {
+        background: transparent;
         border: none;
-        cursor: pointer;
+        border-bottom: 1px dashed #4a4a4a;
+        outline: none;
+        color: #d4d4d4;
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        font-size: 0.875rem;
+        padding: 0.25rem 0.5rem;
+        min-width: 150px;
+    }
+
+    .note-url-input::placeholder {
+        color: #555;
+    }
+
+    .note-error {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1rem;
+        background-color: rgba(220, 38, 38, 0.1);
+        border: 1px solid rgba(220, 38, 38, 0.3);
+        border-radius: 0.375rem;
+        color: #fca5a5;
+        font-size: 0.875rem;
+        margin-bottom: 1rem;
+    }
+
+    .note-error-icon {
+        width: 1.25rem;
+        height: 1.25rem;
+        flex-shrink: 0;
+    }
+
+    .navbar-edit-bullet {
         padding: 0;
         display: flex;
         align-items: center;

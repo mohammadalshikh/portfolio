@@ -1,22 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEditMode } from '../../contexts/EditModeContext';
-import NoteModal from '../NoteModal';
-
-const toKebabCase = (str) => {
-    return str
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-');
-};
-
 
 const NotesPage = () => {
     const { isEditMode, data, updateSection, hasUnsavedChanges, undo, save, isSaving, loadNotes, isLoading, isLoadingNotes, notesLoaded } = useEditMode();
     const { notes = {}, notesOrder = [] } = data;
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
 
     const [isDragging, setIsDragging] = useState(false);
@@ -44,35 +32,6 @@ const NotesPage = () => {
             : allSlugs;
         return orderedSlugs.map(slug => ({ slug, ...notes[slug] }));
     })();
-
-    const handleAddNote = (newNote) => {
-        let slug = newNote.url ? toKebabCase(newNote.url) : toKebabCase(newNote.title);
-
-        let counter = 1;
-        let baseSlug = slug;
-        while (notes[slug]) {
-            slug = `${baseSlug}-${counter}`;
-            counter++;
-        }
-
-        const noteData = {
-            title: newNote.title,
-            content: JSON.stringify(newNote.content),
-            createdAt: new Date().toISOString()
-        };
-
-        updateSection('notes', {
-            ...notes,
-            [slug]: noteData
-        });
-
-        const newOrder = [slug, ...notesArray.map(n => n.slug)];
-        updateSection('notesOrder', newOrder);
-
-        setIsModalOpen(false);
-
-        navigate(`/notes/${slug}`);
-    };
 
     const handleDeleteNote = (slug) => {
         const confirmed = window
@@ -243,7 +202,6 @@ const NotesPage = () => {
         }
     }, [isDragging, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
 
-    const existingSlugs = Object.keys(notes);
 
     const getVisualOffset = (actualIndex) => {
         if (dragIndex === null || hoverIndex === null) return 0;
@@ -346,7 +304,7 @@ const NotesPage = () => {
                                 </svg>
                             )}
                         </button>
-                        <button onClick={() => setIsModalOpen(true)} className="edit-action-btn edit-action-btn-add" title="Add note">
+                        <button onClick={() => navigate('/notes/new')} className="edit-action-btn edit-action-btn-add" title="Add note">
                             <svg className="edit-action-btn-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                             </svg>
@@ -406,13 +364,6 @@ const NotesPage = () => {
                     })
                 )}
             </div>
-
-            <NoteModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onSubmit={handleAddNote}
-                existingSlugs={existingSlugs}
-            />
         </div>
     );
 };
