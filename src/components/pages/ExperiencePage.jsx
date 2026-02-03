@@ -1,16 +1,13 @@
 import { useEditMode } from '../../contexts/EditModeContext';
 import EditableExperiences from '../sections/EditableExperiences';
 
-/**
- * Job experiences
- */
 const ExperiencePage = () => {
     const { isEditMode, data, updateSection, hasUnsavedChanges, undo, save, isSaving } = useEditMode();
     const { experiences = [] } = data;
 
     const handleAddExperience = () => {
         const newEntry = {
-            id: Date.now(),
+            id: crypto.randomUUID(),
             company: '',
             position: '',
             duration: '',
@@ -69,7 +66,7 @@ const ExperiencePage = () => {
                     onChange={(newExperiences) => updateSection('experiences', newExperiences)}
                 />
             ) : (
-                <div>
+                <div className="cards-list">
                     {experiences.length === 0 ? (
                         <p className="empty-state">No experience entries yet.</p>
                     ) : (

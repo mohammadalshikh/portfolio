@@ -11,10 +11,6 @@ import { EditModeProvider, useEditMode } from './contexts/EditModeContext';
 import { fallbackData } from './fallback/fallbackData';
 import { recordVisit } from './services/analyticsService';
 
-/**
- * Protected route wrapper for notes pages
- * Redirects to home if user doesn't have access
- */
 const ProtectedNotesRoute = ({ children }) => {
     const { canAccessNotes } = useEditMode();
     const location = useLocation();

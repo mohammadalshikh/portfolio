@@ -1,21 +1,12 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-/**
- * Upload highlights to ImageBB and manage image list
- * 
- * @param {Array} images - Array of image URLs
- * @param {function} onChange - Callback when images change
- * @param {string} apiKey - ImageBB API key
- * @param {string} id - Unique identifier for this uploader instance
- */
 const HighlightUploader = ({ images = [], onChange, apiKey, id }) => {
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(null);
     const [dragOver, setDragOver] = useState(false);
     const [_dragCounter, setDragCounter] = useState(0);
 
-    // Generate unique ID for the file input
     const inputId = `image-upload-input-${id || Math.random().toString(36).substr(2, 9)}`;
 
     const uploadToImageBB = async (file) => {

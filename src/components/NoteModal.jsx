@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
 
-/**
- * Convert string to kebab-case
- */
 const toKebabCase = (str) => {
     return str
         .toLowerCase()
@@ -12,9 +9,6 @@ const toKebabCase = (str) => {
         .replace(/-+/g, '-');
 };
 
-/**
- * Modal for creating a new note
- */
 const NoteModal = ({ isOpen, onClose, onSubmit, existingSlugs = [] }) => {
     const [title, setTitle] = useState('');
     const [url, setUrl] = useState('');

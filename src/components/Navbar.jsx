@@ -2,9 +2,6 @@ import { useState, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useEditMode } from '../contexts/EditModeContext';
 
-/**
- * Top navigation bar
- */
 const Navbar = ({ onEditClick }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();

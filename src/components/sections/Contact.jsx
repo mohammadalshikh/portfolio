@@ -1,6 +1,4 @@
-/**
- * Contact form
- */
+
 const Contact = () => {
     const handleSubmit = (e) => {
         e.preventDefault();

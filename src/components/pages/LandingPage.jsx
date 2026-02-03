@@ -3,16 +3,13 @@ import EditableAbout from '../sections/EditableAbout';
 import EditableEducation from '../sections/EditableEducation';
 import Contact from '../sections/Contact';
 
-/**
- * Home page
- */
 const LandingPage = () => {
     const { isEditMode, data, updateSection, hasUnsavedChanges, undo, save, isSaving } = useEditMode();
     const { about = {}, education = [] } = data;
 
     const handleAddEducation = () => {
         const newEntry = {
-            id: Date.now(),
+            id: crypto.randomUUID(),
             institution: '',
             degree: '',
             field: '',

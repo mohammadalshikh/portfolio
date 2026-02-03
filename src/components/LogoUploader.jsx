@@ -2,21 +2,12 @@ import { useState, useRef } from 'react';
 import axios from 'axios';
 import { useEditMode } from '../contexts/EditModeContext';
 
-/**
- * Upload a logo for cards
- * 
- * @param {string} logoUrl - Current logo URL
- * @param {function} onChange - Callback (URL or null for deletion)
- * @param {string} apiKey - ImageBB API key
- * @param {string} alt - Alt text for the logo image
- */
 const LogoUploader = ({ logoUrl, onChange, apiKey, alt = 'Logo' }) => {
     const { isEditMode } = useEditMode();
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(null);
     const fileInputRef = useRef(null);
 
-    // Outside edit mode, just display the logo
     if (!isEditMode) {
         return logoUrl ? (
             <img src={logoUrl} alt={alt} className="card-logo" />
@@ -51,12 +42,10 @@ const LogoUploader = ({ logoUrl, onChange, apiKey, alt = 'Logo' }) => {
         setUploading(true);
 
         try {
-            // Validate file type
             if (!file.type.startsWith('image/')) {
                 throw new Error('File is not an image');
             }
 
-            // Validate file size (max 32MB for ImageBB)
             if (file.size > 32 * 1024 * 1024) {
                 throw new Error('File exceeds 32MB limit');
             }
@@ -86,7 +75,8 @@ const LogoUploader = ({ logoUrl, onChange, apiKey, alt = 'Logo' }) => {
 
     const handleDelete = (e) => {
         e.stopPropagation();
-        const confirmed = window.confirm('Are you sure you want to delete this logo?');
+        const confirmed = window
+            .confirm('Are you sure you want to delete this logo?');
         if (confirmed) {
             onChange(null);
         }

@@ -1,6 +1,4 @@
-/**
- * Edit mode version of About section
- */
+
 const EditableAbout = ({ about = {}, onChange }) => {
     const { intro = '' } = about;
 

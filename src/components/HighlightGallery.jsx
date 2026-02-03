@@ -1,11 +1,5 @@
 import { useState } from 'react';
 
-/**
- * Display thumbnail images with modal view and navigation
- * for each project
- * 
- * @param {Array} images - Array of image URLs
- */
 const HighlightGallery = ({ images = [] }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);

@@ -79,21 +79,34 @@ const getSessionCookie = () => {
     return null;
 };
 
-/**
- * Clear the session cookie
- */
 const clearSessionCookie = () => {
     document.cookie = `${SESSION_COOKIE_NAME}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; SameSite=Strict`;
 };
 
-/**
- * Manages edit mode state and data synchronization
- * 
- * @param {Object} children - Child components
- * @param {Object} initialData - Fallback data (if fetch fails)
- */
+const sanitizeData = (data) => {
+    if (!data) return data;
+
+    const sanitizedData = { ...data };
+    const seenIds = new Set();
+
+    const arrayFields = ['experiences', 'projects', 'education'];
+
+    arrayFields.forEach(field => {
+        if (Array.isArray(sanitizedData[field])) {
+            sanitizedData[field] = sanitizedData[field].map(item => {
+                if (!item.id || seenIds.has(item.id)) {
+                    return { ...item, id: crypto.randomUUID() };
+                }
+                seenIds.add(item.id);
+                return item;
+            });
+        }
+    });
+
+    return sanitizedData;
+};
+
 export const EditModeProvider = ({ children, initialData }) => {
-    // Initialize state from cookie if valid session exists
     const initialSession = getSessionCookie();
 
     const [accessMode, setAccessMode] = useState(initialSession || ACCESS_MODES.NORMAL);
@@ -113,27 +126,27 @@ export const EditModeProvider = ({ children, initialData }) => {
         setConfigValid(isValid);
     }, []);
 
-    // Load main data from backend on mount (excluding notes)
     useEffect(() => {
         const loadData = async () => {
             setIsLoading(true);
             try {
                 const { data: fetchedData, success } = await fetchData();
 
-                // Successfully fetched from bin
                 if (success) {
-                    // Preserve existing notes if already loaded
-                    setData(prev => ({ ...fetchedData, notes: prev.notes || {} }));
-                    setOriginalData(prev => ({ ...fetchedData, notes: prev.notes || {} }));
+                    const sanitized = sanitizeData(fetchedData);
+                    setData(prev => ({ ...sanitized, notes: prev.notes || {} }));
+                    setOriginalData(prev => ({ ...sanitized, notes: prev.notes || {} }));
                     setBinConnected(true);
                 } else {
-                    setData(prev => ({ ...initialData, notes: prev.notes || {} }));
-                    setOriginalData(prev => ({ ...initialData, notes: prev.notes || {} }));
+                    const sanitized = sanitizeData(initialData);
+                    setData(prev => ({ ...sanitized, notes: prev.notes || {} }));
+                    setOriginalData(prev => ({ ...sanitized, notes: prev.notes || {} }));
                     setBinConnected(false);
                 }
             } catch {
-                setData(prev => ({ ...initialData, notes: prev.notes || {} }));
-                setOriginalData(prev => ({ ...initialData, notes: prev.notes || {} }));
+                const sanitized = sanitizeData(initialData);
+                setData(prev => ({ ...sanitized, notes: prev.notes || {} }));
+                setOriginalData(prev => ({ ...sanitized, notes: prev.notes || {} }));
                 setBinConnected(false);
             } finally {
                 setIsLoading(false);
@@ -143,7 +156,6 @@ export const EditModeProvider = ({ children, initialData }) => {
         loadData();
     }, [initialData]);
 
-    // Function to load notes on demand (with sessionStorage caching)
     const loadNotes = async () => {
         if (notesLoaded || isLoadingNotes) return;
 
@@ -187,7 +199,6 @@ export const EditModeProvider = ({ children, initialData }) => {
         setIsDirty(hasChanges);
     }, [data, originalData]);
 
-    // Enter access mode
     const enterAccessMode = useCallback((password, mode) => {
         if (verifyPassword(password)) {
             setIsAuthenticated(true);
@@ -199,7 +210,6 @@ export const EditModeProvider = ({ children, initialData }) => {
         return false;
     }, []);
 
-    // Switch between modes
     const switchAccessMode = useCallback((newMode) => {
         if (!isAuthenticated) return false;
 

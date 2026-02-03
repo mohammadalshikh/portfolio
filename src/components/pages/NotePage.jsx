@@ -2,10 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEditMode } from '../../contexts/EditModeContext';
 
-/**
- * Parse note content from JSON string
- * Returns array of content blocks: { type: 'text', content: string }
- */
 const parseNoteContent = (contentString) => {
     try {
         return JSON.parse(contentString);
@@ -14,16 +10,10 @@ const parseNoteContent = (contentString) => {
     }
 };
 
-/**
- * Get plain text from content blocks
- */
 const getPlainText = (contentBlocks) => {
     return contentBlocks.map(block => block.content).join('\n\n');
 };
 
-/**
- * Single note page
- */
 const NotePage = () => {
     const { slug } = useParams();
     const navigate = useNavigate();
@@ -40,7 +30,6 @@ const NotePage = () => {
     const [editedTitle, setEditedTitle] = useState(note?.title || '');
     const [editedContent, setEditedContent] = useState(getPlainText(contentBlocks));
 
-    // Update local state when note changes (e.g., after save)
     useEffect(() => {
         if (note) {
             setEditedTitle(note.title);

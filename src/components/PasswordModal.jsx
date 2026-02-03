@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useEditMode, ACCESS_MODES } from '../contexts/EditModeContext';
 
-/**
- * Entering/exiting edit mode or view mode
- */
 const PasswordModal = ({ isOpen, onClose }) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');

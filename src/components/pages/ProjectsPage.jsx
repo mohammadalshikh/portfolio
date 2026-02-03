@@ -2,16 +2,13 @@ import { useEditMode } from '../../contexts/EditModeContext';
 import EditableProjects from '../sections/EditableProjects';
 import HighlightGallery from '../HighlightGallery';
 
-/**
- * Projects portfolio
- */
 const ProjectsPage = () => {
     const { isEditMode, data, updateSection, hasUnsavedChanges, undo, save, isSaving } = useEditMode();
     const { projects = [] } = data;
 
     const handleAddProject = () => {
         const newEntry = {
-            id: Date.now(),
+            id: crypto.randomUUID(),
             name: '',
             description: '',
             technologies: [],
@@ -71,7 +68,7 @@ const ProjectsPage = () => {
                     onChange={(newProjects) => updateSection('projects', newProjects)}
                 />
             ) : (
-                <div>
+                <div className="cards-list">
                     {projects.length === 0 ? (
                         <p className="empty-state">No projects yet.</p>
                     ) : (

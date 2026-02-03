@@ -362,7 +362,6 @@
             font-size: 0.978rem;
         }
 
-        /* Ensure editable inputs also scale on larger screens */
         .editable-input.card-title {
             font-size: 1.265rem;
         }
@@ -412,12 +411,15 @@
         border: 1px solid #3c3c3c;
         border-radius: 0.5rem;
         padding: 1.25rem;
-        margin-bottom: 1rem;
         transition: border-color 0.2s ease;
     }
 
     .card:hover {
         border-color: #4a4a4a;
+    }
+
+    .editable-card-wrapper.editable-card-expanded .card:hover {
+        border-color: #3c3c3c;
     }
 
     .card-title {
@@ -1014,7 +1016,6 @@
         color: #6d6d6d;
     }
 
-    /* Ensure editable inputs inherit card title styling */
     .editable-input.card-title {
         font-size: 1.1rem;
         font-weight: 600;
@@ -1069,7 +1070,6 @@
         color: #6d6d6d;
     }
 
-    /* Ensure editable textareas inherit section text styling */
     .editable-textarea.section-text {
         font-size: 1rem;
         color: #b3b3b3;
@@ -1094,37 +1094,66 @@
 
     .editable-card-wrapper {
         position: relative;
-        padding-left: 2rem;
+        padding-left: 0;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        isolation: isolate;
+        /* Create stacking context to isolate z-index of action buttons */
     }
 
-    .editable-card-wrapper.dragging {
-        opacity: 0.5;
+    .editable-card-wrapper.editable-card-draggable {
+        cursor: grab;
     }
 
-    .editable-card-drag-handle {
+    .editable-card-wrapper.editable-card-draggable:active {
+        cursor: grabbing;
+    }
+
+    .editable-card-wrapper.editable-card-dragging {
+        z-index: 100;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        transform: scale(1.02);
+        cursor: grabbing;
+    }
+
+    .editable-card-wrapper.editable-card-dragging .editable-card-content {
+        pointer-events: none;
+    }
+
+    .editable-card-wrapper.editable-card-draggable:hover:not(.editable-card-dragging) .card-folded {
+        border-color: #569cd6;
+    }
+
+    .editable-card-actions {
         position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: move;
-        color: #6d6d6d;
-        transition: color 0.2s ease;
+        top: 0.5rem;
+        right: 0.5rem;
+        z-index: 10;
+        display: flex;
+        gap: 0.25rem;
     }
 
-    .editable-card-drag-handle:hover {
-        color: #9d9d9d;
+    .editable-card-expand {
+        background-color: #3c3c3c;
+        color: #b3b3b3;
+        border: none;
+        border-radius: 50%;
+        padding: 0.375rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease, color 0.2s ease;
     }
 
-    .editable-card-drag-icon {
-        width: 1.25rem;
-        height: 1.25rem;
+    .editable-card-expand:hover {
+        background-color: #4c4c4c;
+        color: #ffffff;
+    }
+
+    .editable-card-expand-icon {
+        width: 0.875rem;
+        height: 0.875rem;
+        display: block;
     }
 
     .editable-card-delete {
-        position: absolute;
-        top: -0.5rem;
-        right: -0.5rem;
-        z-index: 10;
         background-color: #c42b1c;
         color: #ffffff;
         border: none;
@@ -1141,6 +1170,96 @@
     .editable-card-delete-icon {
         width: 0.875rem;
         height: 0.875rem;
+        display: block;
+    }
+
+    .card-folded {
+        min-height: auto;
+        background-color: #252526;
+        border-radius: 0.5rem;
+        border: 1px solid #3c3c3c;
+        transition: border-color 0.2s ease;
+    }
+
+    .card-folded-content {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .card-folded-logo {
+        width: 2rem;
+        height: 2rem;
+        object-fit: contain;
+        border-radius: 0.25rem;
+        flex-shrink: 0;
+    }
+
+    .card-folded-title {
+        font-weight: 500;
+        color: #e0e0e0;
+        font-size: 0.95rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .card-folded-subtitle {
+        color: #8e8e8e;
+        font-size: 0.85rem;
+        margin-left: auto;
+        white-space: nowrap;
+    }
+
+    .cards-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .editable-cards-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.3rem;
+    }
+
+    .editable-card-content {
+        overflow: hidden;
+        transition: max-height 0.3s ease, opacity 0.2s ease;
+    }
+
+    .editable-card-content.collapsed {
+        max-height: 0;
+        opacity: 0;
+    }
+
+    .editable-card-content.expanded {
+        max-height: 2000px;
+        opacity: 1;
+    }
+
+    .note-card-draggable {
+        cursor: grab;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .note-card-draggable:active {
+        cursor: grabbing;
+    }
+
+    .note-card-dragging {
+        z-index: 100;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        transform: scale(1.02);
+        cursor: grabbing;
+    }
+
+    .note-card-draggable:hover:not(.note-card-dragging) {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .note-card-draggable:hover:not(.note-card-dragging) .note-card {
+        border-color: #569cd6;
     }
 
     .empty-state {
@@ -1470,6 +1589,16 @@
 
     .note-card-wrapper {
         position: relative;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        isolation: isolate; /* Create stacking context for z-index isolation */
+    }
+
+    .note-card-wrapper .editable-card-delete {
+        position: absolute;
+        top: -0.5rem;
+        right: -0.5rem;
+        left: auto;
+        transform: none;
     }
 
     .note-card {
@@ -1484,7 +1613,7 @@
         justify-content: flex-start;
     }
 
-    .note-card:hover {
+    .note-card-wrapper:not(.note-card-dragging):not(.note-card-draggable) .note-card:hover {
         border-color: #569cd6;
         transform: translateY(-2px);
     }
