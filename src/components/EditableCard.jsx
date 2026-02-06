@@ -287,7 +287,9 @@ const EditableCard = ({
                 if (isDragging || isDraggingRef.current || justFinishedDragging.current) return;
                 const target = e.target;
                 if (target.closest('button, input, textarea, select, a, [contenteditable="true"]')) return;
-                handleExpandToggle();
+                if (!isExpanded) {
+                    handleExpandToggle();
+                }
             }}
         >
             <div className="editable-card-actions">
@@ -306,6 +308,27 @@ const EditableCard = ({
                     </svg>
                 </button>
             </div>
+
+            {isExpanded && (
+                <div
+                    className="editable-card-fold-header"
+                    onMouseDown={(e) => e.stopPropagation()}
+                >
+                    <svg
+                        className="editable-card-fold-icon"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            if (isDragging || isDraggingRef.current || justFinishedDragging.current) return;
+                            handleExpandToggle();
+                        }}
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                    </svg>
+                </div>
+            )}
 
             <div className="editable-card-content">
                 {isExpanded ? children : foldedContent}
