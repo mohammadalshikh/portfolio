@@ -6,6 +6,17 @@ import sitecore from './assets/sitecore.png';
 export const fallbackData = {
     projects: [
         {
+            "name": "Tail CLI",
+            "description": "CLI tool to detect P99 latency spikes in log files using AI",
+            "technologies": [
+                "Go",
+                "Bubble Tea",
+                "Cobra"
+            ],
+            "link": null,
+            "github": "https://github.com/mohammadalshikh/tail-cli"
+        },
+        {
             "name": "Give N Take",
             "description": "Geospatial donation platform",
             "technologies": [
@@ -62,16 +73,6 @@ export const fallbackData = {
             "github": "https://github.com/mohammadalshikh/true-clear-terminal-vscode"
         },
         {
-            "name": "This website",
-            "description": "My personal website",
-            "technologies": [
-                "React",
-                "Tailwind"
-            ],
-            "link": null,
-            "github": "https://www.github.com/mohammadalshikh/personal-website"
-        },
-        {
             "name": "ConcoGrades",
             "description": "Classroom management web-app",
             "technologies": [
@@ -85,7 +86,7 @@ export const fallbackData = {
         }
     ],
     about: {
-        "intro": "Hi there! I’m Mohammad, a final-year Computer Science student at Concordia and a developer who enjoys turning ideas into thoughtful web experiences. \n\nOver the past few years I’ve explored a wide range of technologies, and I’m now focused on building modern and scalable web apps.",
+        "intro": "Hi there! I’m Mohammad, a final-year Computer Science student at Concordia and a developer who enjoys turning ideas into live experiences.\n\nOver the past few years I’ve explored a wide range of technologies and software roles, and I’m now focused on automation and backend development.",
         "skills": [
             "Python",
             "C#",
@@ -104,7 +105,7 @@ export const fallbackData = {
             "company": "Coveo",
             "position": "Software Developer Intern",
             "duration": "Jan. 2025 - Aug. 2025",
-            "description": "Client implementations",
+            "description": "Client implementations (Professional Services)",
             "technologies": [
                 "React",
                 "Angular",
@@ -118,7 +119,7 @@ export const fallbackData = {
             "company": "Consoltec",
             "position": "Web Developer Intern",
             "duration": "May 2024 - Aug. 2024",
-            "description": "Full-stack",
+            "description": "Full-stack web development",
             "technologies": [
                 "C#",
                 "Angular",
@@ -153,4 +154,5 @@ export const fallbackData = {
             "image": concordia
         }
     ],
+    notes: {},
 };
