@@ -92,7 +92,6 @@ export const fallbackData = {
             "C#",
             "Java",
             "JavaScript",
-            "TypeScript",
             "Spring Boot",
             "SQL",
             "Flask",
@@ -147,9 +146,9 @@ export const fallbackData = {
             "institution": "Concordia University",
             "degree": "Bachelor of Computer Science",
             "field": "",
-            "duration": "Jan. 2021 - Apr. 2026",
+            "duration": "Jan. 2021 - May 2026",
             "achievements": [
-                "VP - Google Developer Student Club"
+                "Member of The Institute for Career Edge (C.Edge)"
             ],
             "image": concordia
         }
