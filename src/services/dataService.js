@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const JSONBIN_API_KEY = import.meta.env.JSONBIN_API_KEY;
-const JSONBIN_DATA_BIN_ID = import.meta.env.JSONBIN_DATA_BIN_ID;
+const JSONBIN_MAIN_BIN_ID = import.meta.env.JSONBIN_MAIN_BIN_ID;
 const IMGBB_API_KEY = import.meta.env.IMGBB_API_KEY;
 
 const JSONBIN_BASE_URL = 'https://api.jsonbin.io/v3';
@@ -10,7 +10,7 @@ const IMGBB_BASE_URL = 'https://api.imgbb.com/1/upload';
 export const fetchData = async () => {
     try {
         const response = await axios.get(
-            `${JSONBIN_BASE_URL}/b/${JSONBIN_DATA_BIN_ID}/latest`,
+            `${JSONBIN_BASE_URL}/b/${JSONBIN_MAIN_BIN_ID}/latest`,
             {
                 headers: {
                     'X-Access-Key': JSONBIN_API_KEY,
@@ -26,7 +26,7 @@ export const fetchData = async () => {
 
 export const saveData = async (data) => {
     const response = await axios.put(
-        `${JSONBIN_BASE_URL}/b/${JSONBIN_DATA_BIN_ID}`,
+        `${JSONBIN_BASE_URL}/b/${JSONBIN_MAIN_BIN_ID}`,
         data,
         {
             headers: {
@@ -73,8 +73,8 @@ export const validateConfig = () => {
     if (!JSONBIN_API_KEY || JSONBIN_API_KEY === 'JSONBIN_API_KEY') {
         missingVars.push('JSONBIN_API_KEY');
     }
-    if (!JSONBIN_DATA_BIN_ID || JSONBIN_DATA_BIN_ID === 'JSONBIN_DATA_BIN_ID') {
-        missingVars.push('JSONBIN_DATA_BIN_ID');
+    if (!JSONBIN_MAIN_BIN_ID || JSONBIN_MAIN_BIN_ID === 'JSONBIN_MAIN_BIN_ID') {
+        missingVars.push('JSONBIN_MAIN_BIN_ID');
     }
     if (!IMGBB_API_KEY || IMGBB_API_KEY === 'IMGBB_API_KEY') {
         missingVars.push('IMGBB_API_KEY');

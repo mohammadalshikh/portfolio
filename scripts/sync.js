@@ -23,11 +23,11 @@ try {
 }
 
 const unescapeEnv = (val) => val ? val.replace(/\\(.)/g, '$1') : val;
-const JSONBIN_API_KEY = unescapeEnv(process.env.VITE_JSONBIN_API_KEY || process.env.JSONBIN_API_KEY);
-const JSONBIN_DATA_BIN_ID = unescapeEnv(process.env.VITE_JSONBIN_DATA_BIN_ID || process.env.JSONBIN_DATA_BIN_ID);
+const JSONBIN_API_KEY = unescapeEnv(process.env.JSONBIN_API_KEY);
+const JSONBIN_MAIN_BIN_ID = unescapeEnv(process.env.JSONBIN_MAIN_BIN_ID);
 
 async function fetchBinData() {
-    const response = await fetch(`${JSONBIN_BASE_URL}/b/${JSONBIN_DATA_BIN_ID}/latest`, {
+    const response = await fetch(`${JSONBIN_BASE_URL}/b/${JSONBIN_MAIN_BIN_ID}/latest`, {
         headers: { 'X-Access-Key': JSONBIN_API_KEY }
     });
 
@@ -151,7 +151,7 @@ export const fallbackData = {
 
 async function main() {
 
-    if (!JSONBIN_API_KEY || !JSONBIN_DATA_BIN_ID) {
+    if (!JSONBIN_API_KEY || !JSONBIN_MAIN_BIN_ID) {
         process.exit(1);
     }
 
