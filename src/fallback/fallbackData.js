@@ -146,7 +146,7 @@ export const fallbackData = {
             "institution": "Concordia University",
             "degree": "Bachelor of Computer Science",
             "field": "",
-            "duration": "Jan. 2021 - May 2026",
+            "duration": "Jan. 2022 - May 2026",
             "achievements": [
                 "Member of The Institute for Career Edge (C.Edge)"
             ],
