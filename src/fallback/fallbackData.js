@@ -86,7 +86,7 @@ export const fallbackData = {
         }
     ],
     about: {
-        "intro": "Hi there! I’m Mohammad, a final-year Computer Science student at Concordia and a developer who enjoys turning ideas into live experiences.\n\nOver the past few years I’ve explored a wide range of technologies and software roles, and I’m now focused on automation and backend development.",
+        "intro": "Hi there! I’m Mohammad, a Computer Science graduate from Concordia and a developer who enjoys turning ideas into live experiences.\n\nOver the past few years I’ve explored a wide range of technologies and software roles, and I’m now focused on automation and backend development.",
         "skills": [
             "Python",
             "C#",
@@ -146,9 +146,9 @@ export const fallbackData = {
             "institution": "Concordia University",
             "degree": "Bachelor of Computer Science",
             "field": "",
-            "duration": "Jan. 2022 - May 2026",
+            "duration": "Jan. 2021 - May 2026",
             "achievements": [
-                "Member of The Institute for Career Edge (C.Edge)"
+                "Honors: With Distinction"
             ],
             "image": concordia
         }
