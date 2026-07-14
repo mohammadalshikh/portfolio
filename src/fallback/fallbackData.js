@@ -6,7 +6,7 @@ import sitecore from './assets/sitecore.png';
 export const fallbackData = {
     projects: [
         {
-            "name": "Tail CLI",
+            "name": "Tails",
             "description": "CLI tool to detect P99 latency spikes in log files using AI",
             "technologies": [
                 "Go",
@@ -14,7 +14,7 @@ export const fallbackData = {
                 "Cobra"
             ],
             "link": null,
-            "github": "https://github.com/mohammadalshikh/tail-cli"
+            "github": "https://github.com/mohammadalshikh/tails"
         },
         {
             "name": "Give N Take",
