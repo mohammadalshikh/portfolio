@@ -10,6 +10,7 @@ export const fallbackData = {
             "description": "CLI tool to detect P99 latency spikes in log files using AI",
             "technologies": [
                 "Go",
+                "Bash",
                 "Bubble Tea",
                 "Cobra"
             ],
@@ -142,6 +143,14 @@ export const fallbackData = {
         }
     ],
     education: [
+        {
+            "institution": "Concordia University",
+            "degree": "Master of Applied Computer Science",
+            "field": "",
+            "duration": "Sep. 2026 - Dec. 2027",
+            "achievements": [],
+            "image": concordia
+        },
         {
             "institution": "Concordia University",
             "degree": "Bachelor of Computer Science",
