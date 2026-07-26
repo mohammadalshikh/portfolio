@@ -39,7 +39,7 @@ export const fallbackData = {
                 "JUnit",
                 "Bootstrap"
             ],
-            "link": "https://bestfood.mohammadalshikh.com",
+            "link": "",
             "github": "https://github.com/mohammadalshikh/bestfood"
         },
         {
@@ -82,7 +82,7 @@ export const fallbackData = {
                 "JavaScript",
                 "Bootstrap"
             ],
-            "link": "https://concogrades.mohammadalshikh.com",
+            "link": "",
             "github": "https://github.com/mohammadalshikh/concogrades"
         }
     ],
@@ -103,7 +103,7 @@ export const fallbackData = {
     experiences: [
         {
             "company": "Coveo",
-            "position": "Software Developer Intern",
+            "position": "Software Engineer Intern",
             "duration": "Jan. 2025 - Aug. 2025",
             "description": "Client implementations (Professional Services)",
             "technologies": [
@@ -117,7 +117,7 @@ export const fallbackData = {
         },
         {
             "company": "Consoltec",
-            "position": "Web Developer Intern",
+            "position": "Software Engineer Intern",
             "duration": "May 2024 - Aug. 2024",
             "description": "Full-stack web development",
             "technologies": [

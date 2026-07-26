@@ -9,7 +9,7 @@ import http from 'http';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const FALLBACK_DIR = path.join(__dirname, '..', 'src', 'fallback');
+const FALLBACK_DIR = path.join(__dirname, './', 'src', 'fallback');
 const ASSETS_DIR = path.join(FALLBACK_DIR, 'assets');
 const FALLBACK_FILE = path.join(FALLBACK_DIR, 'fallbackData.js');
 
