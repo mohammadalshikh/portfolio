@@ -4,11 +4,6 @@ import { fetchData, saveData, validateConfig } from '../services/dataService';
 
 const EditModeContext = createContext();
 
-const verifyPassword = (password) => {
-    const hash = CryptoJS.SHA256(password).toString();
-    const storedHash = import.meta.env.PASSWORD_HASH;
-    return hash === storedHash;
-};
 
 const sanitizeData = (data) => {
     if (!data) return data;
@@ -35,6 +30,7 @@ const sanitizeData = (data) => {
 
 export const EditModeProvider = ({ children, initialData }) => {
     const [isEditMode, setIsEditMode] = useState(false);
+    const [editPassword, setEditPassword] = useState(null);
     const [data, setData] = useState(initialData);
     const [originalData, setOriginalData] = useState(initialData);
     const [isDirty, setIsDirty] = useState(false);
@@ -83,11 +79,9 @@ export const EditModeProvider = ({ children, initialData }) => {
     }, [data, originalData]);
 
     const enterEditMode = useCallback((password) => {
-        if (verifyPassword(password)) {
-            setIsEditMode(true);
-            return true;
-        }
-        return false;
+        setEditPassword(password);
+        setIsEditMode(true);
+        return true;
     }, []);
 
     const exitEditMode = useCallback(() => {
@@ -120,7 +114,7 @@ export const EditModeProvider = ({ children, initialData }) => {
 
         setIsLoading(true);
         try {
-            await saveData(data);
+            await saveData(data, editPassword);
             setOriginalData(data);
             setIsDirty(false);
             alert('Changes saved successfully!');
@@ -165,6 +159,7 @@ export const EditModeProvider = ({ children, initialData }) => {
         isSaving: isLoading,
         configValid,
         binConnected,
+        editPassword,
         enterEditMode,
         exitEditMode,
         updateData,

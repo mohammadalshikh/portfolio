@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-const JSONBIN_API_KEY = import.meta.env.JSONBIN_API_KEY;
 const JSONBIN_MAIN_BIN_ID = import.meta.env.JSONBIN_MAIN_BIN_ID;
 const IMGBB_API_KEY = import.meta.env.IMGBB_API_KEY;
 
@@ -24,17 +23,11 @@ export const fetchData = async () => {
 };
 
 
-export const saveData = async (data) => {
-    const response = await axios.put(
-        `${JSONBIN_BASE_URL}/b/${JSONBIN_MAIN_BIN_ID}`,
+export const saveData = async (data, password) => {
+    const response = await axios.post('/api/edit', {
         data,
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Access-Key': JSONBIN_API_KEY,
-            },
-        }
-    );
+        password,
+    });
 
     return response.data;
 };
@@ -70,9 +63,6 @@ const getDefaultData = () => ({
 export const validateConfig = () => {
     const missingVars = [];
 
-    if (!JSONBIN_API_KEY || JSONBIN_API_KEY === 'JSONBIN_API_KEY') {
-        missingVars.push('JSONBIN_API_KEY');
-    }
     if (!JSONBIN_MAIN_BIN_ID || JSONBIN_MAIN_BIN_ID === 'JSONBIN_MAIN_BIN_ID') {
         missingVars.push('JSONBIN_MAIN_BIN_ID');
     }
