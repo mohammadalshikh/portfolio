@@ -5,7 +5,7 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: "Method not allowed" });
     }
 
-    const { password, data } = req.body;
+    const { action, password, data } = req.body;
 
     const hash = crypto
         .createHash("sha256")
@@ -16,19 +16,27 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: "Wrong password" });
     }
 
-    const response = await fetch(
-        `https://api.jsonbin.io/v3/b/${process.env.JSONBIN_MAIN_BIN_ID}`,
-        {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "X-Master-Key": process.env.JSONBIN_API_KEY,
-            },
-            body: JSON.stringify(data),
-        }
-    );
+    if (action === "auth") {
+        return res.json({ success: true });
+    }
 
-    const result = await response.json();
+    if (action === "save") {
+        const response = await fetch(
+            `https://api.jsonbin.io/v3/b/${process.env.JSONBIN_MAIN_BIN_ID}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Master-Key": process.env.JSONBIN_API_KEY,
+                },
+                body: JSON.stringify(data),
+            }
+        );
 
-    res.json(result);
+        const result = await response.json();
+
+        return res.json(result);
+    }
+
+    return res.status(400).json({ error: "Invalid action" });
 }

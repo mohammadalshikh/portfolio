@@ -78,10 +78,29 @@ export const EditModeProvider = ({ children, initialData }) => {
         setIsDirty(hasChanges);
     }, [data, originalData]);
 
-    const enterEditMode = useCallback((password) => {
-        setEditPassword(password);
-        setIsEditMode(true);
-        return true;
+    const enterEditMode = useCallback(async (password) => {
+        try {
+            const response = await fetch("/api/edit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    action: "auth",
+                    password,
+                }),
+            });
+
+            if (!response.ok) {
+                return false;
+            }
+
+            setEditPassword(password);
+            setIsEditMode(true);
+            return true;
+        } catch {
+            return false;
+        }
     }, []);
 
     const exitEditMode = useCallback(() => {

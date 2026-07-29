@@ -32,7 +32,7 @@ const PasswordModal = ({ isOpen, onClose }) => {
 
     if (!isOpen) return null;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (isExitMode) {
@@ -41,7 +41,7 @@ const PasswordModal = ({ isOpen, onClose }) => {
                 onClose();
             }
         } else {
-            const success = enterEditMode(password);
+            const success = await enterEditMode(password);
             if (success) {
                 onClose();
             } else {

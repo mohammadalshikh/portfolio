@@ -9,13 +9,9 @@ const IMGBB_BASE_URL = 'https://api.imgbb.com/1/upload';
 export const fetchData = async () => {
     try {
         const response = await axios.get(
-            `${JSONBIN_BASE_URL}/b/${JSONBIN_MAIN_BIN_ID}/latest`,
-            {
-                headers: {
-                    'X-Access-Key': JSONBIN_API_KEY,
-                },
-            }
+            `${JSONBIN_BASE_URL}/b/${JSONBIN_MAIN_BIN_ID}/latest`
         );
+
         return { data: response.data.record, success: true };
     } catch {
         return { data: getDefaultData(), success: false };
@@ -25,6 +21,7 @@ export const fetchData = async () => {
 
 export const saveData = async (data, password) => {
     const response = await axios.post('/api/edit', {
+        action: "save",
         data,
         password,
     });
