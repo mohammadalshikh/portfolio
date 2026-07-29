@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react';
-import axios from 'axios';
 import { useEditMode } from '../contexts/EditModeContext';
+import { uploadImage } from '../services/apiService';
 
-const LogoUploader = ({ logoUrl, onChange, apiKey, alt = 'Logo' }) => {
+const LogoUploader = ({ logoUrl, onChange, alt = 'Logo' }) => {
     const { isEditMode } = useEditMode();
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(null);
@@ -13,27 +13,6 @@ const LogoUploader = ({ logoUrl, onChange, apiKey, alt = 'Logo' }) => {
             <img src={logoUrl} alt={alt} className="card-logo" />
         ) : null;
     }
-
-    const uploadToImageBB = async (file) => {
-        if (!apiKey) {
-            throw new Error('ImageBB API key is required');
-        }
-
-        const formData = new FormData();
-        formData.append('image', file);
-
-        const response = await axios.post(
-            `https://api.imgbb.com/1/upload?key=${apiKey}`,
-            formData,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            }
-        );
-
-        return response.data.data.url;
-    };
 
     const handleFileSelect = async (file) => {
         if (!file) return;
@@ -50,7 +29,7 @@ const LogoUploader = ({ logoUrl, onChange, apiKey, alt = 'Logo' }) => {
                 throw new Error('File exceeds 32MB limit');
             }
 
-            const uploadedUrl = await uploadToImageBB(file);
+            const uploadedUrl = await uploadImage(file);
             onChange(uploadedUrl);
         } catch (err) {
             setError(err.message || 'Failed to upload logo');
@@ -75,8 +54,11 @@ const LogoUploader = ({ logoUrl, onChange, apiKey, alt = 'Logo' }) => {
 
     const handleDelete = (e) => {
         e.stopPropagation();
-        const confirmed = window
-            .confirm('Are you sure you want to delete this logo?');
+
+        const confirmed = window.confirm(
+            'Are you sure you want to delete this logo?'
+        );
+
         if (confirmed) {
             onChange(null);
         }

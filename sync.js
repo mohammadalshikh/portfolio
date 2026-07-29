@@ -28,7 +28,7 @@ const JSONBIN_MAIN_BIN_ID = unescapeEnv(process.env.JSONBIN_MAIN_BIN_ID);
 
 async function fetchBinData() {
     const response = await fetch(`${JSONBIN_BASE_URL}/b/${JSONBIN_MAIN_BIN_ID}/latest`, {
-        headers: { 'X-Access-Key': JSONBIN_API_KEY }
+        headers: { 'X-Master-Key': JSONBIN_API_KEY }
     });
 
     if (!response.ok) {

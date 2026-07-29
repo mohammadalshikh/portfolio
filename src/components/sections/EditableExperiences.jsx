@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import EditableCard from '../EditableCard';
 import LogoUploader from '../LogoUploader';
 
-const IMGBB_API_KEY = import.meta.env.IMGBB_API_KEY;
-
 const EditableExperiences = ({ experiences = [], onChange }) => {
     const [expandedCards, setExpandedCards] = useState({});
     const [newCardIds, setNewCardIds] = useState(new Set());
@@ -148,7 +146,6 @@ const EditableExperiences = ({ experiences = [], onChange }) => {
                                         <LogoUploader
                                             logoUrl={exp.image || null}
                                             onChange={(newLogoUrl) => handleFieldChange(index, 'image', newLogoUrl)}
-                                            apiKey={IMGBB_API_KEY}
                                             alt={`${exp.company} logo`}
                                         />
                                         <div>

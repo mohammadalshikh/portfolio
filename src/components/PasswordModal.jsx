@@ -8,7 +8,7 @@ const PasswordModal = ({ isOpen, onClose }) => {
         enterEditMode,
         exitEditMode,
         isEditMode,
-        binConnected
+        backendConnected
     } = useEditMode();
 
     const isExitMode = isEditMode;
@@ -69,8 +69,8 @@ const PasswordModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className="modal-status">
-                    <p className={`modal-status-text ${binConnected ? 'modal-status-connected' : 'modal-status-disconnected'}`}>
-                        {binConnected ? '● Connected' : '● Disconnected'}
+                    <p className={`modal-status-text ${backendConnected ? 'modal-status-connected' : 'modal-status-disconnected'}`}>
+                        {backendConnected ? '● Connected' : '● Disconnected'}
                     </p>
                 </div>
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import LandingPage from './components/pages/LandingPage';
@@ -7,7 +7,7 @@ import ProjectsPage from './components/pages/ProjectsPage';
 import PasswordModal from './components/PasswordModal';
 import { EditModeProvider } from './contexts/EditModeContext';
 import { fallbackData } from './fallback/fallbackData';
-import { recordVisit } from './services/analyticsService';
+import { recordVisit } from './services/apiService';
 
 function AppContent() {
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -28,7 +28,6 @@ function AppContent() {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/experience" element={<ExperiencePage />} />
                 <Route path="/projects" element={<ProjectsPage />} />
-                {/* Catch-all route - redirect unknown paths to home */}
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
 

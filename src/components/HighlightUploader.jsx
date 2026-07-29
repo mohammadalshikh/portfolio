@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import axios from 'axios';
+import { uploadImage } from '../services/apiService';
 
-const HighlightUploader = ({ images = [], onChange, apiKey, id }) => {
+const HighlightUploader = ({ images = [], onChange, id }) => {
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(null);
     const [dragOver, setDragOver] = useState(false);
@@ -9,51 +9,30 @@ const HighlightUploader = ({ images = [], onChange, apiKey, id }) => {
 
     const inputId = `image-upload-input-${id || Math.random().toString(36).substr(2, 9)}`;
 
-    const uploadToImageBB = async (file) => {
-        if (!apiKey) {
-            throw new Error('ImageBB API key is required. Please add IMGBB_API_KEY to your .env file');
-        }
-
-        const formData = new FormData();
-        formData.append('image', file);
-
-        const response = await axios.post(
-            `https://api.imgbb.com/1/upload?key=${apiKey}`,
-            formData,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            }
-        );
-
-        return response.data.data.url;
-    };
-
     const handleFileSelect = async (files) => {
         setError(null);
         setUploading(true);
 
         try {
-            const uploadPromises = Array.from(files).map(file => {
-                // Validate file type
+            const selectedFiles = Array.from(files);
+
+            selectedFiles.forEach(file => {
                 if (!file.type.startsWith('image/')) {
                     throw new Error(`File ${file.name} is not an image`);
                 }
 
-                // Validate file size (max 32MB for ImageBB)
                 if (file.size > 32 * 1024 * 1024) {
                     throw new Error(`File ${file.name} exceeds 32MB limit`);
                 }
-
-                return uploadToImageBB(file);
             });
 
-            const uploadedUrls = await Promise.all(uploadPromises);
+            const uploadedUrls = await Promise.all(
+                selectedFiles.map(file => uploadImage(file))
+            );
+
             onChange([...images, ...uploadedUrls]);
         } catch (err) {
             setError(err.message || 'Failed to upload images');
-            console.error('Upload error:', err);
         } finally {
             setUploading(false);
         }
@@ -109,8 +88,7 @@ const HighlightUploader = ({ images = [], onChange, apiKey, id }) => {
     const handleDelete = (index) => {
         const confirmed = window.confirm('Are you sure you want to delete this image?');
         if (confirmed) {
-            const newImages = images.filter((_, i) => i !== index);
-            onChange(newImages);
+            onChange(images.filter((_, i) => i !== index));
         }
     };
 

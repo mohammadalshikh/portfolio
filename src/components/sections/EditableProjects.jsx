@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import EditableCard from '../EditableCard';
 import HighlightUploader from '../HighlightUploader';
 
-const IMGBB_API_KEY = import.meta.env.IMGBB_API_KEY;
-
 const EditableProjects = ({ projects = [], onChange }) => {
     const [expandedCards, setExpandedCards] = useState({});
     const [newCardIds, setNewCardIds] = useState(new Set());
@@ -172,7 +170,6 @@ const EditableProjects = ({ projects = [], onChange }) => {
                                 <HighlightUploader
                                     images={project.screenshots || []}
                                     onChange={(newImages) => handleFieldChange(index, 'screenshots', newImages)}
-                                    apiKey={IMGBB_API_KEY}
                                     id={`project-${project.id || index}`}
                                 />
 

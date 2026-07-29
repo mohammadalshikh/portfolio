@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect, useCallback } from 'react';
 import CryptoJS from 'crypto-js';
-import { fetchData, saveData, validateConfig } from '../services/dataService';
+import { authenticate, fetchMain, saveMain } from '../services/apiService';
 
 const EditModeContext = createContext();
 
@@ -35,36 +35,30 @@ export const EditModeProvider = ({ children, initialData }) => {
     const [originalData, setOriginalData] = useState(initialData);
     const [isDirty, setIsDirty] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [configValid, setConfigValid] = useState(false);
-    const [binConnected, setBinConnected] = useState(false);
-
-    useEffect(() => {
-        const isValid = validateConfig();
-        setConfigValid(isValid);
-    }, []);
+    const [backendConnected, setBackendConnected] = useState(false);
 
     useEffect(() => {
         const loadData = async () => {
             setIsLoading(true);
             try {
-                const { data: fetchedData, success } = await fetchData();
+                const { data: fetchedData, success } = await fetchMain();
 
                 if (success) {
                     const sanitized = sanitizeData(fetchedData);
                     setData(sanitized);
                     setOriginalData(sanitized);
-                    setBinConnected(true);
+                    setBackendConnected(true);
                 } else {
                     const sanitized = sanitizeData(initialData);
                     setData(sanitized);
                     setOriginalData(sanitized);
-                    setBinConnected(false);
+                    setBackendConnected(false);
                 }
             } catch {
                 const sanitized = sanitizeData(initialData);
                 setData(sanitized);
                 setOriginalData(sanitized);
-                setBinConnected(false);
+                setBackendConnected(false);
             } finally {
                 setIsLoading(false);
             }
@@ -80,18 +74,9 @@ export const EditModeProvider = ({ children, initialData }) => {
 
     const enterEditMode = useCallback(async (password) => {
         try {
-            const response = await fetch("/api/edit", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    action: "auth",
-                    password,
-                }),
-            });
+            const result = await authenticate(password);
 
-            if (!response.ok) {
+            if (!result.success) {
                 return false;
             }
 
@@ -124,7 +109,7 @@ export const EditModeProvider = ({ children, initialData }) => {
     };
 
     const saveChanges = async () => {
-        if (!binConnected) {
+        if (!backendConnected) {
             alert('Backend not configured. Changes are only saved locally.');
             setOriginalData(data);
             setIsDirty(false);
@@ -133,14 +118,22 @@ export const EditModeProvider = ({ children, initialData }) => {
 
         setIsLoading(true);
         try {
-            await saveData(data, editPassword);
+            const result = await saveMain(data, editPassword);
+
+            if (!result.success) {
+                throw new Error(result.error);
+            }
+
             setOriginalData(data);
             setIsDirty(false);
             alert('Changes saved successfully!');
             return true;
-        } catch {
-            alert('Failed to save changes. Please try again.');
+
+        } catch (error) {
+            console.error('Save failed:', error);
+            alert(error.message || 'Failed to save changes. Please try again.');
             return false;
+
         } finally {
             setIsLoading(false);
         }
@@ -176,8 +169,7 @@ export const EditModeProvider = ({ children, initialData }) => {
         hasUnsavedChanges: isDirty,
         isLoading,
         isSaving: isLoading,
-        configValid,
-        binConnected,
+        backendConnected,
         editPassword,
         enterEditMode,
         exitEditMode,
