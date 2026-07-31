@@ -8,7 +8,8 @@ export default async function handler(req, res) {
     try {
         const visitData = req.body;
 
-        const timestamp = new Date().toISOString();
+        const now = new Date();
+        const timestamp = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()} - ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
         let location = {
             country: "Unknown",
