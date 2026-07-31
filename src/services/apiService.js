@@ -94,13 +94,19 @@ export const uploadImage = async (file) => {
 
 export const recordVisit = async () => {
     try {
+
+        const ipResponse = await fetch("https://ipapi.co/json/");
+        const ipData = await ipResponse.json();
+        const location = ipData.city && ipData.country_name ? `${ipData.city}, ${ipData.country_name}` : "Unknown";
+
         const visitData = {
             device: getDeviceInfo(),
             windowSize: `${window.innerWidth}x${window.innerHeight}`,
             ...getBrowserInfo(),
             os: getOSInfo(),
             browserLanguage: getBrowserLanguage(),
-            referrer: document.referrer || 'Direct',
+            referrer: document.referrer || "Direct",
+            location,
         };
 
         const response = await fetch("/api/analytics", {

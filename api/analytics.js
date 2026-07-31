@@ -9,26 +9,23 @@ export default async function handler(req, res) {
         const visitData = req.body;
 
         const now = new Date();
-        const timestamp = `${String(now.getDate()).padStart(2, '0')}-${String(now.getMonth() + 1).padStart(2, '0')}-${now.getFullYear()} - ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
-        let location = {
-            country: "Unknown",
-            city: "Unknown",
-        };
+        const formatter = new Intl.DateTimeFormat("en-CA", {
+            timeZone: "America/Toronto",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+        });
 
-        try {
-            const ipResponse = await fetch("https://ipapi.co/json/");
-            const ipData = await ipResponse.json();
+        const parts = Object.fromEntries(formatter.formatToParts(now).map(({ type, value }) => [type, value]));
 
-            location = {
-                country: ipData.country_name || "Unknown",
-                city: ipData.city || "Unknown",
-            };
-        } catch {}
+        const timestamp = `${parts.day}-${parts.month}-${parts.year} - ${parts.hour}:${parts.minute}`;
 
         const newVisit = {
             ...visitData,
-            ...location,
             timestamp,
         };
 
@@ -43,7 +40,7 @@ export default async function handler(req, res) {
 
         if (!binResponse.ok) {
             const text = await binResponse.text();
-            console.error("JSONBIN ERROR:", binResponse.status, text);
+            console.error("JSONBin error:", binResponse.status, text);
             throw new Error("Failed to fetch analytics bin");
         }
 
